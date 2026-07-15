@@ -6,7 +6,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes" />
 <meta name="theme-color" content="#0b1f3a" />
 <title>Convertisseur Yuan → Ariary</title>
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 40'%3E%3Crect width='100' height='40' fill='%230b1f3a'/%3E%3Cpath d='M4 20 L60 14 L96 20 L60 26 Z' fill='%23e8eef6'/%3E%3Cpath d='M40 16 L30 2 L36 16 Z' fill='%23c5d3e3'/%3E%3Cpath d='M40 24 L30 38 L36 24 Z' fill='%23c5d3e3'/%3E%3Cpath d='M62 17 L74 9 L70 18 Z' fill='%23aab9cc'/%3E%3Crect x='20' y='18' width='40' height='4' fill='%23b7c6d8'/%3E%3Ccircle cx='84' cy='20' r='2.4' fill='%232f80ed'/%3E%3C/svg%3E" />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 40'%3E%3Crect width='100' height='40' fill='%230b1f3a'/%3E%3Cpath d='M4 20 L60 14 L96 pverty20 L60 26 Z' fill='%23e8eef6'/%3E%3Cpath d='M40 16 L30 2 L36 16 Z' fill='%23c5d3e3'/%3E%3Cpath d='M40 24 L30 38 L36 24 Z' fill='%23c5d3e3'/%3E%3Cpath d='M62 17 L74 9 L70 18 Z' fill='%23aab9cc'/%3E%3Crect x='20' y='18' width='40' height='4' fill='%23b7c6d8'/%3E%3Ccircle cx='84' cy='20' r='2.4' fill='%232f80ed'/%3E%3C/svg%3E" />
 <meta name="apple-mobile-web-app-title" content="Yuan Ariary" />
 <style>
   :root{
@@ -22,7 +22,6 @@
     color:var(--txt); overflow:hidden; position:relative;
     padding-top:env(safe-area-inset-top);padding-bottom:env(safe-area-inset-bottom);
   }
-  /* Fond professionnel : lignes discrètes + bandeau transport */
   .bg{position:fixed;inset:0;z-index:0;overflow:hidden;}
   .bg .grid{position:absolute;inset:0;
     background-image:linear-gradient(rgba(255,255,255,.04) 1px,transparent 1px),
@@ -31,8 +30,6 @@
   .band{position:absolute;left:0;right:0;height:120px;opacity:.5;}
   .band.top{top:0;background:linear-gradient(180deg,rgba(47,128,237,.12),transparent);}
   .band.bottom{bottom:0;background:linear-gradient(0deg,rgba(22,160,133,.12),transparent);}
-
-  /* Vaisseaux SVG réels, discrets, en bas du bandeau */
   .ship{position:absolute;bottom:14%;width:120px;opacity:.85;filter:drop-shadow(0 4px 8px rgba(0,0,0,.35));animation:sail 28s linear infinite;}
   .ship.s2{animation-duration:38s;width:90px;bottom:20%;opacity:.6;}
   .plane{position:absolute;width:90px;opacity:.9;animation:fly 34s linear infinite;}
@@ -43,26 +40,29 @@
   .wrap{position:relative;z-index:2;max-width:560px;margin:0 auto;min-height:100%;
     display:flex;flex-direction:column;justify-content:center;padding:26px 18px;gap:16px;}
 
+  /* Navigation onglets */
+  .topnav{display:flex;align-items:center;justify-content:flex-end;gap:10px;}
+  .tabbtn{background:var(--panel);border:1px solid var(--line);color:var(--muted);
+    padding:9px 16px;border-radius:10px;font-size:13px;font-weight:600;cursor:pointer;}
+  .tabbtn.active{background:var(--accent);color:#fff;border-color:var(--accent);}
+
   .head{text-align:center;}
   .head .eyebrow{font-size:11px;letter-spacing:3px;color:var(--muted);text-transform:uppercase;}
   .head h1{font-size:23px;font-weight:700;letter-spacing:.3px;color:#fff;margin-top:4px;}
   .head .sub{font-size:12.5px;color:var(--muted);margin-top:4px;}
-  .ribbon{display:inline-flex;align-items:center;gap:6px;margin-top:8px;font-size:11px;
-    color:var(--accent);border:1px solid var(--line);border-radius:20px;padding:4px 12px;background:var(--panel);}
 
   .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px;
     backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);box-shadow:0 10px 40px rgba(0,0,0,.3);}
   .field{margin-bottom:16px;}
-  .field:last-child{margin-bottom:0;}
   .field label{display:block;font-size:11px;letter-spacing:1px;color:var(--muted);margin-bottom:7px;text-transform:uppercase;}
   input[type=number]{width:100%;background:var(--ink);border:1px solid var(--line);
     color:#fff;font-size:26px;font-weight:600;padding:14px 16px;border-radius:10px;outline:none;}
   input:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(47,128,237,.25);}
+
   .route{display:flex;align-items:center;justify-content:center;gap:12px;margin:6px 0;}
   .route .end{display:flex;flex-direction:column;align-items:center;font-size:12px;color:var(--muted);}
   .route .end b{color:var(--txt);font-size:14px;}
   .route .arrow{color:var(--accent);font-size:22px;}
-  .route svg{width:30px;height:30px;}
 
   .result{margin-top:18px;background:var(--ink);border:1px solid var(--line);border-radius:12px;padding:16px;text-align:center;}
   .result .big{font-size:38px;font-weight:700;color:var(--ariary);letter-spacing:.5px;}
@@ -88,22 +88,17 @@
   .about{font-size:12px;line-height:1.6;color:#9bb2cc;margin-top:12px;padding:12px 14px;
     border:1px solid var(--line);border-radius:10px;background:rgba(255,255,255,.02);}
 
-  /* Onglets / navigation */
-  .topnav{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:4px;}
-  .tabs{display:flex;gap:8px;}
-  .tabbtn{background:var(--panel);border:1px solid var(--line);color:var(--muted);
-    padding:9px 16px;border-radius:10px;font-size:13px;font-weight:600;cursor:pointer;}
-  .tabbtn.active{background:var(--accent);color:#fff;border-color:var(--accent);}
+  /* Sélecteur d'envoi (deux boutons clairs) */
+  .shipchoice{display:flex;gap:10px;flex-wrap:wrap;}
+  .shipbtn{flex:1;min-width:130px;background:var(--ink);border:1px solid var(--line);color:var(--txt);
+    border-radius:10px;padding:14px 10px;font-size:15px;font-weight:700;text-align:center;cursor:pointer;line-height:1.4;}
+  .shipbtn span{display:block;font-size:11px;font-weight:400;color:var(--muted);margin-top:4px;}
+  .shipbtn.active{border-color:var(--accent);box-shadow:0 0 0 2px rgba(47,128,237,.4);color:#fff;}
+  .shipbtn.active span{color:var(--accent);}
+
+  /* Onglets : on affiche uniquement l'onglet actif */
   .tabview{display:none;}
   .tabview.active{display:block;}
-
-  /* Choix d'envoi (boutons) */
-  .shipchoice{display:flex;gap:10px;flex-wrap:wrap;}
-  .shipbtn{flex:1;min-width:140px;background:var(--ink);border:1px solid var(--line);color:var(--txt);
-    border-radius:10px;padding:12px;font-size:14px;font-weight:600;text-align:center;cursor:pointer;line-height:1.4;}
-  .shipbtn span{display:block;font-size:11px;font-weight:400;color:var(--muted);margin-top:3px;}
-  .shipbtn.active{border-color:var(--accent);box-shadow:0 0 0 2px rgba(47,128,237,.35);color:#fff;}
-  .shipbtn.active span{color:var(--accent);}
 </style>
 </head>
 <body>
@@ -111,7 +106,6 @@
   <div class="grid"></div>
   <div class="band top"></div>
   <div class="band bottom"></div>
-  <!-- Bateau cargo (SVG réel) -->
   <svg class="ship" viewBox="0 0 120 50" xmlns="http://www.w3.org/2000/svg">
     <rect x="2" y="30" width="116" height="14" rx="3" fill="#2f4d70"/>
     <rect x="6" y="22" width="20" height="9" fill="#3a5d82"/>
@@ -128,9 +122,8 @@
     <rect x="4" y="30" width="112" height="12" rx="3" fill="#274160"/>
     <rect x="14" y="22" width="84" height="9" fill="#315579"/>
     <rect x="104" y="25" width="12" height="16" fill="#1a2e44"/>
-    <path d="M14 30 L60 17 L106 30 Z" fill="#cdd8e6" opacity=".85"/>
+    <path d="M14 30 L60 17 L106 Text 30 Z" fill="#cdd8e6" opacity=".85"/>
   </svg>
-  <!-- Avion de ligne (SVG réel) -->
   <svg class="plane" viewBox="0 0 100 40" xmlns="http://www.w3.org/2000/svg">
     <path d="M4 20 L60 14 L96 20 L60 26 Z" fill="#e8eef6"/>
     <path d="M40 16 L30 2 L36 16 Z" fill="#c5d3e3"/>
@@ -148,175 +141,169 @@
 
 <div class="wrap">
   <div class="topnav">
-    <div class="tabs" style="margin-left:auto;">
-      <button class="tabbtn active" data-tab="change">💱 Change</button>
-      <button class="tabbtn" data-tab="poids">⚖️ Poids</button>
-    </div>
+    <button class="tabbtn active" data-tab="change">💱 Change</button>
+    <button class="tabbtn" data-tab="poids">⚖️ Poids</button>
   </div>
 
-  <div class="head">
-    <div class="eyebrow">International Trade · Foreign Exchange</div>
-    <h1>Convertisseur Yuan → Ariary</h1>
-    <div class="sub">Taux de change CNY / MGA en temps réel pour le commerce international</div>
-  </div>
-
-  <!-- Onglet CHANGE -->
+  <!-- ONGLET CHANGE -->
   <div class="tabview active" id="tab-change">
-  <div class="card">
-    <div class="field">
-      <label>Prix en Yuan chinois (CNY ¥)</label>
-      <input type="number" id="yuan" value="100" min="0" step="0.01" inputmode="decimal" />
+    <div class="head">
+      <div class="eyebrow">International Trade · Foreign Exchange</div>
+      <h1>Convertisseur Yuan → Ariary</h1>
+      <div class="sub">Taux de change CNY / MGA en temps réel pour le commerce international</div>
     </div>
-
-    <div class="route">
-      <div class="end"><svg viewBox="0 0 40 40"><circle cx="20" cy="20" r="18" fill="#16314a" stroke="#2f80ed"/><text x="20" y="26" font-size="16" text-anchor="middle" fill="#fff">¥</text></svg><b>CNY</b>Chine</div>
-      <span class="arrow">→</span>
-      <div class="end"><svg viewBox="0 0 40 40"><circle cx="20" cy="20" r="18" fill="#16314a" stroke="#e0a800"/><text x="20" y="26" font-size="14" text-anchor="middle" fill="#fff">Ar</text></svg><b>MGA</b>Madagascar</div>
-    </div>
-
-    <div class="field" style="margin-top:14px;">
-      <label>Montant en Ariary (MGA)</label>
-      <div class="result">
-        <span class="big" id="out">—</span><span class="unit">Ar</span>
-        <div class="formula">MGA = ¥ × 1,03 × cours de change CNY/MGA</div>
+    <div class="card">
+      <div class="field">
+        <label>Prix en Yuan chinois (CNY ¥)</label>
+        <input type="number" id="yuan" value="100" min="0" step="0.01" inputmode="decimal" />
       </div>
-    </div>
-
-    <div class="rate">
-      <div>1 CNY ≈ <span class="v"><b id="rate">…</b> Ar</span> &nbsp;<span id="src" class="status"><span class="dot"></span><span class="txt">chargement…</span></span></div>
-      <button class="refresh" id="refresh">↻ Actualiser le taux</button>
+      <div class="route">
+        <div class="end"><svg viewBox="0 0 40 40"><circle cx="20" cy="20" r="18" fill="#16314a" stroke="#2f80ed"/><text x="20" y="26" font-size="16" text-anchor="middle" fill="#fff">¥</text></svg><b>CNY</b>Chine</div>
+        <span class="arrow">→</span>
+        <div class="end"><svg viewBox="0 0 40 40"><circle cx="20" cy="20" r="18" fill="#16314a" stroke="#e0a800"/><text x="20" y="26" font-size="14" text-anchor="middle" fill="#fff">Ar</text></svg><b>MGA</b>Madagascar</div>
+      </div>
+      <div class="field" style="margin-top:14px;">
+        <label>Montant en Ariary (MGA)</label>
+        <div class="result">
+          <span class="big" id="out">—</span><span class="unit">Ar</span>
+          <div class="formula">MGA = ¥ × 1,03 × cours de change CNY/MGA</div>
+        </div>
+      </div>
+      <div class="rate">
+        <div>1 CNY ≈ <span class="v"><b id="rate">…</b> Ar</span> &nbsp;<span id="src" class="status"><span class="dot"></span><span class="txt">chargement…</span></span></div>
+        <button class="refresh" id="refresh">↻ Actualiser le taux</button>
+      </div>
+      <div class="foot">Cours de référence mid-market (XE / Google) via ExchangeRate-API · repli open.er-api</div>
     </div>
   </div>
 
-  <div class="foot">
-    Cours de référence mid-market (XE / Google) via <a href="https://www.exchangerate-api.com" target="_blank" rel="noopener">ExchangeRate-API</a> · repli open.er-api · mis à jour à chaque appel
-  </div>
-  </div><!-- /card change -->
-  </div><!-- /tab-change -->
-
-  <!-- Onglet POIDS -->
+  <!-- ONGLET POIDS -->
   <div class="tabview" id="tab-poids">
-  <div class="head">
-    <div class="eyebrow">Logistique · Frais d'envoi</div>
-    <h1>Calculateur de Poids</h1>
-    <div class="sub">Estimation du coût d'expédition depuis la Chine vers Madagascar</div>
-  </div>
-  <div class="card">
-    <div class="field">
-      <label>Poids du produit (grammes)</label>
-      <input type="number" id="grams" value="1000" min="0" step="1" inputmode="decimal" />
+    <div class="head">
+      <div class="eyebrow">Logistique · Frais d'envoi</div>
+      <h1>Calculateur de Poids</h1>
+      <div class="sub">Estimation du coût d'expédition depuis la Chine vers Madagascar</div>
     </div>
-    <div class="field">
-      <label>Type d'envoi</label>
-      <div class="shipchoice">
-        <button type="button" class="shipbtn active" data-mode="express">Envoi express<br><span>83 000 Ar / kg</span></button>
-        <button type="button" class="shipbtn" data-mode="normal">Envoi normal<br><span>70 000 Ar / kg</span></button>
+    <div class="card">
+      <div class="field">
+        <label>➊ Poids du produit (grammes)</label>
+        <input type="number" id="grams" value="1000" min="0" step="1" inputmode="decimal" />
       </div>
-    </div>
-    <div class="field" style="margin-top:14px;">
-      <label>Prix d'envoi estimé (Ariary)</label>
-      <div class="result">
-        <span class="big" id="shipOut">—</span><span class="unit">Ar</span>
-        <div class="formula">Prix Ar = Poids(g) × Tarif(Ar/kg) ÷ 1000</div>
+      <div class="field">
+        <label>➋ Type d'envoi</label>
+        <div class="shipchoice">
+          <button type="button" class="shipbtn active" data-mode="express">Envoi express<span>83 000 Ar / kg</span></button>
+          <button type="button" class="shipbtn" data-mode="normal">Envoi normal<span>70 000 Ar / kg</span></button>
+        </div>
       </div>
-    </div>
-    <div class="foot">
-      Express : 83 000 Ar/kg · Normal : 70 000 Ar/kg
+      <div class="field" style="margin-top:14px;">
+        <label>➌ Prix d'envoi estimé (Ariary)</label>
+        <div class="result">
+          <span class="big" id="shipOut">—</span><span class="unit">Ar</span>
+          <div class="formula">Prix Ar = Poids(g) × Tarif(Ar/kg) ÷ 1000</div>
+        </div>
+      </div>
+      <div class="foot">Express : 83 000 Ar/kg · Normal : 70 000 Ar/kg</div>
     </div>
   </div>
-  </div><!-- /tab-poids -->
 
   <div class="sig">Made by <b>Mathieu.RMB</b></div>
-
   <div class="about">
     Cet outil convertit instantanément un prix en Yuan chinois (CNY) vers l'Ariary malgache (MGA)
     pour faciliter les transactions et la négociation commerciale entre la Chine et Madagascar.
     Le montant applique une majoration de 3 % (1,03) et s'appuie sur le taux de change mid-market
-    de référence (XE / Google), mis à jour en direct à chaque utilisaton.
+    de référence (XE / Google), mis à jour en direct à chaque utilisation.
+    L'onglet « Poids » estime les frais d'expédition (express 83 000 Ar/kg, normal 70 000 Ar/kg).
   </div>
 </div>
 
 <script>
-  const FEE = 1.03;            // majoration 3% (formule demandée)
-  const FALLBACK_RATE = 631.59;
-  const yuanEl=document.getElementById('yuan');
-  const outEl=document.getElementById('out');
-  const rateEl=document.getElementById('rate');
-  const srcEl=document.getElementById('src');
+  try {
+    /* ===== Conversion Change ===== */
+    const FEE = 1.03;
+    const FALLBACK_RATE = 631.59;
+    const yuanEl = document.getElementById('yuan');
+    const outEl = document.getElementById('out');
+    const rateEl = document.getElementById('rate');
+    const srcEl = document.getElementById('src');
 
-  function calc(rate){
-    const y=parseFloat(yuanEl.value);
-    if(isNaN(y)||y<0){outEl.textContent='—';return;}
-    outEl.textContent=(y*FEE*rate).toLocaleString('fr-FR',{maximumFractionDigits:2});
-  }
-  async function fetchRate(){
-    srcEl.className='status';srcEl.innerHTML='<span class="dot"></span><span class="txt">chargement…</span>';
-    rateEl.textContent='…';
-    // Source primaire : ExchangeRate-API (partenaire XE / taux de référence Google mid-market)
-    // Repli automatique sur open.er-api.com puis sur dernier taux mémorisé.
-    const sources=[
-      'https://api.exchangerate-api.com/v4/latest/CNY',
-      'https://open.er-api.com/v6/latest/CNY'
-    ];
-    let rate=null, prov='';
-    for(const url of sources){
-      try{
-        const r=await fetch(url);
-        const j=await r.json();
-        const v=j&&j.rates&&j.rates.MGA;
-        if(v){rate=v;prov=url;break;}
-      }catch(e){/* try next */}
+    function calcChange(rate){
+      const y = parseFloat(yuanEl.value);
+      if (isNaN(y) || y < 0){ outEl.textContent = '—'; return; }
+      outEl.textContent = (y * FEE * rate).toLocaleString('fr-FR', {maximumFractionDigits:2});
     }
-    if(!rate){
-      const fb=parseFloat(localStorage.getItem('yuan_rate'))||FALLBACK_RATE;
-      rateEl.textContent=fb.toLocaleString('fr-FR',{maximumFractionDigits:2});
-      srcEl.className='status bad';
-      srcEl.innerHTML='<span class="dot"></span><span class="txt">hors-ligne (dernier taux mémorisé)</span>';
-      calc(fb);return;
+
+    async function fetchRate(){
+      srcEl.className = 'status';
+      srcEl.innerHTML = '<span class="dot"></span><span class="txt">chargement…</span>';
+      rateEl.textContent = '…';
+      const sources = [
+        'https://api.exchangerate-api.com/v4/latest/CNY',
+        'https://open.er-api.com/v6/latest/CNY'
+      ];
+      let rate = null, prov = '';
+      for (const url of sources){
+        try {
+          const r = await fetch(url);
+          const j = await r.json();
+          const v = j && j.rates && j.rates.MGA;
+          if (v){ rate = v; prov = url; break; }
+        } catch(e){ /* next */ }
+      }
+      if (!rate){
+        const fb = parseFloat(localStorage.getItem('yuan_rate')) || FALLBACK_RATE;
+        rateEl.textContent = fb.toLocaleString('fr-FR', {maximumFractionDigits:2});
+        srcEl.className = 'status bad';
+        srcEl.innerHTML = '<span class="dot"></span><span class="txt">hors-ligne (dernier taux mémorisé)</span>';
+        calcChange(fb); return;
+      }
+      rateEl.textContent = rate.toLocaleString('fr-FR', {maximumFractionDigits:2});
+      srcEl.className = 'status';
+      srcEl.innerHTML = '<span class="dot"></span><span class="txt">' +
+        (prov.includes('exchangerate-api.com') ? 'XE / Google (mid-market)' : 'open.er-api') + ' · en ligne</span>';
+      calcChange(rate);
+      localStorage.setItem('yuan_rate', rate);
     }
-    rateEl.textContent=rate.toLocaleString('fr-FR',{maximumFractionDigits:2});
-    srcEl.className='status';
-    const label=prov.includes('exchangerate-api.com')?'XE / Google (mid-market)':'open.er-api';
-    srcEl.innerHTML='<span class="dot"></span><span class="txt">'+label+' · en ligne</span>';
-    calc(rate);
-    localStorage.setItem('yuan_rate',rate);
-    localStorage.setItem('yuan_rate_time',Date.now());
-  }
-  yuanEl.addEventListener('input',()=>{calc(parseFloat(localStorage.getItem('yuan_rate'))||FALLBACK_RATE);});
-  document.getElementById('refresh').addEventListener('click',fetchRate);
-  const cached=parseFloat(localStorage.getItem('yuan_rate'));
-  if(cached){rateEl.textContent=cached.toLocaleString('fr-FR',{maximumFractionDigits:2});calc(cached);}
-  fetchRate();
+    yuanEl.addEventListener('input', () => calcChange(parseFloat(localStorage.getItem('yuan_rate')) || FALLBACK_RATE));
+    document.getElementById('refresh').addEventListener('click', fetchRate);
+    const cached = parseFloat(localStorage.getItem('yuan_rate'));
+    if (cached){ rateEl.textContent = cached.toLocaleString('fr-FR',{maximumFractionDigits:2}); calcChange(cached); }
+    fetchRate();
 
-  /* ===== Navigation onglets ===== */
-  const tabs=document.querySelectorAll('.tabbtn');
-  tabs.forEach(b=>b.addEventListener('click',()=>{
-    tabs.forEach(x=>x.classList.remove('active'));
-    b.classList.add('active');
-    document.querySelectorAll('.tabview').forEach(v=>v.classList.remove('active'));
-    document.getElementById('tab-'+b.dataset.tab).classList.add('active');
-  }));
+    /* ===== Navigation onglets ===== */
+    const tabBtns = document.querySelectorAll('.tabbtn');
+    tabBtns.forEach(b => b.addEventListener('click', () => {
+      tabBtns.forEach(x => x.classList.remove('active'));
+      b.classList.add('active');
+      document.querySelectorAll('.tabview').forEach(v => v.classList.remove('active'));
+      const target = document.getElementById('tab-' + b.getAttribute('data-tab'));
+      if (target) target.classList.add('active');
+      else console.warn('onglet introuvable: tab-' + b.getAttribute('data-tab'));
+    }));
 
-  /* ===== Onglet Poids ===== */
-  const TARIF={express:83000, normal:70000};   // Ar par kg
-  const gramsEl=document.getElementById('grams');
-  const shipOut=document.getElementById('shipOut');
-  let shipMode='express';
-  const shipBtns=document.querySelectorAll('.shipbtn');
-  function calcShip(){
-    const g=parseFloat(gramsEl.value);
-    if(isNaN(g)||g<0){shipOut.textContent='—';return;}
-    const prix=g*TARIF[shipMode]/1000;
-    shipOut.textContent=prix.toLocaleString('fr-FR',{maximumFractionDigits:2});
-  }
-  gramsEl.addEventListener('input',calcShip);
-  shipBtns.forEach(b=>b.addEventListener('click',()=>{
-    shipBtns.forEach(x=>x.classList.remove('active'));
-    b.classList.add('active');
-    shipMode=b.dataset.mode;
+    /* ===== Calculateur Poids ===== */
+    const TARIF = { express: 83000, normal: 70000 };  // Ar par kg
+    const gramsEl = document.getElementById('grams');
+    const shipOut = document.getElementById('shipOut');
+    let shipMode = 'express';
+    const shipBtns = document.querySelectorAll('.shipbtn');
+    function calcShip(){
+      const g = parseFloat(gramsEl.value);
+      if (isNaN(g) || g < 0){ shipOut.textContent = '—'; return; }
+      const prix = g * TARIF[shipMode] / 1000;
+      shipOut.textContent = prix.toLocaleString('fr-FR', {maximumFractionDigits:2});
+    }
+    gramsEl.addEventListener('input', calcShip);
+    shipBtns.forEach(b => b.addEventListener('click', () => {
+      shipBtns.forEach(x => x.classList.remove('active'));
+      b.classList.add('active');
+      shipMode = b.getAttribute('data-mode');
+      calcShip();
+    }));
     calcShip();
-  }));
-  calcShip();
+  } catch (err) {
+    console.error('Erreur init:', err);
+  }
 </script>
 </body>
 </html>
