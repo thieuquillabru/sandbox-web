@@ -158,7 +158,7 @@
   </div>
 
   <div class="foot">
-    Cours fourni par <a href="https://www.exchangerate-api.com" target="_blank" rel="noopener">ExchangeRate-API (open.er-api.com)</a> · mis à jour à chaque appel
+    Cours de référence mid-market (XE / Google) via <a href="https://www.exchangerate-api.com" target="_blank" rel="noopener">ExchangeRate-API</a> · repli open.er-api · mis à jour à chaque appel
   </div>
 </div>
 
@@ -178,24 +178,35 @@
   async function fetchRate(){
     srcEl.className='status';srcEl.innerHTML='<span class="dot"></span><span class="txt">chargement…</span>';
     rateEl.textContent='…';
-    try{
-      const r=await fetch('https://open.er-api.com/v6/latest/CNY');
-      const j=await r.json();
-      const rate=j&&j.rates&&j.rates.MGA;
-      if(!rate)throw new Error('MGA introuvable');
-      rateEl.textContent=rate.toLocaleString('fr-FR',{maximumFractionDigits:2});
-      srcEl.className='status';
-      srcEl.innerHTML='<span class="dot"></span><span class="txt">taux en ligne'+(j.time_last_update_utc?' · '+j.time_last_update_utc.slice(0,16):'')+'</span>';
-      calc(rate);
-      localStorage.setItem('yuan_rate',rate);
-      localStorage.setItem('yuan_rate_time',Date.now());
-    }catch(e){
+    // Source primaire : ExchangeRate-API (partenaire XE / taux de référence Google mid-market)
+    // Repli automatique sur open.er-api.com puis sur dernier taux mémorisé.
+    const sources=[
+      'https://api.exchangerate-api.com/v4/latest/CNY',
+      'https://open.er-api.com/v6/latest/CNY'
+    ];
+    let rate=null, prov='';
+    for(const url of sources){
+      try{
+        const r=await fetch(url);
+        const j=await r.json();
+        const v=j&&j.rates&&j.rates.MGA;
+        if(v){rate=v;prov=url;break;}
+      }catch(e){/* try next */}
+    }
+    if(!rate){
       const fb=parseFloat(localStorage.getItem('yuan_rate'))||FALLBACK_RATE;
       rateEl.textContent=fb.toLocaleString('fr-FR',{maximumFractionDigits:2});
       srcEl.className='status bad';
       srcEl.innerHTML='<span class="dot"></span><span class="txt">hors-ligne (dernier taux mémorisé)</span>';
-      calc(fb);
+      calc(fb);return;
     }
+    rateEl.textContent=rate.toLocaleString('fr-FR',{maximumFractionDigits:2});
+    srcEl.className='status';
+    const label=prov.includes('exchangerate-api.com')?'XE / Google (mid-market)':'open.er-api';
+    srcEl.innerHTML='<span class="dot"></span><span class="txt">'+label+' · en ligne</span>';
+    calc(rate);
+    localStorage.setItem('yuan_rate',rate);
+    localStorage.setItem('yuan_rate_time',Date.now());
   }
   yuanEl.addEventListener('input',()=>{calc(parseFloat(localStorage.getItem('yuan_rate'))||FALLBACK_RATE);});
   document.getElementById('refresh').addEventListener('click',fetchRate);
