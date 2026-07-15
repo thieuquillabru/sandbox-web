@@ -87,6 +87,15 @@
   .sig b{color:var(--accent);}
   .about{font-size:12px;line-height:1.6;color:#9bb2cc;margin-top:12px;padding:12px 14px;
     border:1px solid var(--line);border-radius:10px;background:rgba(255,255,255,.02);}
+
+  /* Onglets / navigation */
+  .topnav{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:4px;}
+  .tabs{display:flex;gap:8px;}
+  .tabbtn{background:var(--panel);border:1px solid var(--line);color:var(--muted);
+    padding:9px 16px;border-radius:10px;font-size:13px;font-weight:600;cursor:pointer;}
+  .tabbtn.active{background:var(--accent);color:#fff;border-color:var(--accent);}
+  .tabview{display:none;}
+  .tabview.active{display:block;}
 </style>
 </head>
 <body>
@@ -130,12 +139,21 @@
 </div>
 
 <div class="wrap">
+  <div class="topnav">
+    <div class="tabs" style="margin-left:auto;">
+      <button class="tabbtn active" data-tab="change">💱 Change</button>
+      <button class="tabbtn" data-tab="poids">⚖️ Poids</button>
+    </div>
+  </div>
+
   <div class="head">
     <div class="eyebrow">International Trade · Foreign Exchange</div>
     <h1>Convertisseur Yuan → Ariary</h1>
     <div class="sub">Taux de change CNY / MGA en temps réel pour le commerce international</div>
   </div>
 
+  <!-- Onglet CHANGE -->
+  <div class="tabview active" id="tab-change">
   <div class="card">
     <div class="field">
       <label>Prix en Yuan chinois (CNY ¥)</label>
@@ -165,6 +183,42 @@
   <div class="foot">
     Cours de référence mid-market (XE / Google) via <a href="https://www.exchangerate-api.com" target="_blank" rel="noopener">ExchangeRate-API</a> · repli open.er-api · mis à jour à chaque appel
   </div>
+  <!-- Onglet POIDS -->
+  <div class="tabview" id="tab-poids">
+  <div class="head">
+    <div class="eyebrow">Logistique · Frais d'envoi</div>
+    <h1>Calculateur de Poids</h1>
+    <div class="sub">Estimation du coût d'expédition depuis la Chine vers Madagascar</div>
+  </div>
+  <div class="card">
+    <div class="field">
+      <label>Poids du produit (grammes)</label>
+      <input type="number" id="grams" value="1000" min="0" step="1" inputmode="decimal" />
+    </div>
+    <div class="field">
+      <label>Type d'envoi</label>
+      <div class="route" style="justify-content:flex-start;gap:16px;margin:0;">
+        <label style="display:flex;align-items:center;gap:7px;cursor:pointer;font-size:13px;color:var(--txt);">
+          <input type="radio" name="ship" value="express" checked /> Envoi express (83 000 Ar / kg)
+        </label>
+        <label style="display:flex;align-items:center;gap:7px;cursor:pointer;font-size:13px;color:var(--txt);">
+          <input type="radio" name="ship" value="normal" /> Envoi normal (70 000 Ar / kg)
+        </label>
+      </div>
+    </div>
+    <div class="field" style="margin-top:14px;">
+      <label>Prix d'envoi estimé (Ariary)</label>
+      <div class="result">
+        <span class="big" id="shipOut">—</span><span class="unit">Ar</span>
+        <div class="formula">Prix Ar = Poids(g) × Tarif(Ar/kg) ÷ 1000</div>
+      </div>
+    </div>
+    <div class="foot">
+      Express : 83 000 Ar/kg · Normal : 70 000 Ar/kg
+    </div>
+  </div>
+  </div><!-- /tab-poids -->
+
   <div class="sig">Made by <b>Mathieu.RMB</b></div>
 
   <div class="about">
@@ -226,6 +280,31 @@
   const cached=parseFloat(localStorage.getItem('yuan_rate'));
   if(cached){rateEl.textContent=cached.toLocaleString('fr-FR',{maximumFractionDigits:2});calc(cached);}
   fetchRate();
+
+  /* ===== Navigation onglets ===== */
+  const tabs=document.querySelectorAll('.tabbtn');
+  tabs.forEach(b=>b.addEventListener('click',()=>{
+    tabs.forEach(x=>x.classList.remove('active'));
+    b.classList.add('active');
+    document.querySelectorAll('.tabview').forEach(v=>v.classList.remove('active'));
+    document.getElementById('tab-'+b.dataset.tab).classList.add('active');
+  }));
+
+  /* ===== Onglet Poids ===== */
+  const TARIF={express:83000, normal:70000};   // Ar par kg
+  const gramsEl=document.getElementById('grams');
+  const shipOut=document.getElementById('shipOut');
+  const shipRadios=document.querySelectorAll('input[name="ship"]');
+  function calcShip(){
+    const g=parseFloat(gramsEl.value);
+    if(isNaN(g)||g<0){shipOut.textContent='—';return;}
+    const mode=[...shipRadios].find(r=>r.checked).value;
+    const prix=g*TARIF[mode]/1000;
+    shipOut.textContent=prix.toLocaleString('fr-FR',{maximumFractionDigits:2});
+  }
+  gramsEl.addEventListener('input',calcShip);
+  shipRadios.forEach(r=>r.addEventListener('change',calcShip));
+  calcShip();
 </script>
 </body>
 </html>
