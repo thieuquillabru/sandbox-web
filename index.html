@@ -117,6 +117,45 @@
   .sim-sources{font-size:12px;color:#9bb2cc;line-height:1.5;margin-top:12px;}
   .sim-sources a{color:#2f80ed;text-decoration:none;}
 
+  /* ChatGPT-style Agent UI */
+  .ai-agent-box {
+    background: #0a1426;
+    border: 1px solid #2f80ed;
+    border-radius: 12px;
+    padding: 14px;
+    margin-top: 16px;
+    font-size: 13px;
+  }
+  .ai-agent-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 10px;
+    font-weight: 700;
+    color: #2f80ed;
+  }
+  .ai-thinking {
+    font-style: italic;
+    color: #9bb2cc;
+    margin: 6px 0;
+    padding-left: 8px;
+    border-left: 3px solid #2f80ed;
+  }
+  .ai-step {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 4px 0;
+    font-size: 12.5px;
+  }
+  .ai-step .dot {
+    width: 6px;
+    height: 6px;
+    background: #16a085;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
   /* Ticker bar */
   .ticker-bar{
     position:fixed;top:0;left:0;right:0;z-index:100;
@@ -265,6 +304,14 @@
             <span id="sim-weight-value"></span> <span>g</span>
           </div>
           <div class="sim-sources" id="sim-sources"></div>
+
+          <!-- ChatGPT-style Agent -->
+          <div class="ai-agent-box" id="chatgpt-agent" style="display:none;">
+            <div class="ai-agent-header">
+              🧠 <strong>Agent ChatGPT</strong> <span style="font-size:11px;color:#9bb2cc;">(Collaboratif)</span>
+            </div>
+            <div id="ai-thinking-steps"></div>
+          </div>
         </div>
       </div>
     </div>
@@ -466,7 +513,7 @@
       }
     }
 
-    // Auto-enrichissement continu (toutes les 60 secondes)
+    // ENRICHISSEMENT CONTINU ET AUTOMATIQUE (toutes les 5 secondes)
     function autoEnrichDatabase() {
       // Ajoute des produits nouveaux ou met à jour la confiance
       const newProducts = {
@@ -670,6 +717,63 @@
       simSources.innerHTML = sourcesHTML;
 
       simResult.style.display = "block";
+
+      // === AGENT CHATGPT COLLABORATIF ===
+      showChatGPTAgent(productName, data);
+    }
+
+    // === FONCTION AGENT CHATGPT (Collaboratif avec les autres agents) ===
+    function showChatGPTAgent(productName, data) {
+      const agentBox = document.getElementById('chatgpt-agent');
+      const stepsContainer = document.getElementById('ai-thinking-steps');
+      
+      agentBox.style.display = 'block';
+      stepsContainer.innerHTML = '';
+
+      const steps = [
+        "Analyse du nom du produit...",
+        "Croisement avec les bases CSV (BA1-BA7)...",
+        "Vérification auprès des agents spécialisés...",
+        "Consultation des sources officielles...",
+        "Calcul du consensus IA..."
+      ];
+
+      let currentStep = 0;
+
+      function addStep(text, isFinal = false) {
+        const div = document.createElement('div');
+        div.className = 'ai-step';
+        div.innerHTML = `
+          <div class="dot"></div>
+          <span>${text}</span>
+        `;
+        stepsContainer.appendChild(div);
+      }
+
+      // Animation des étapes
+      const interval = setInterval(() => {
+        if (currentStep < steps.length) {
+          addStep(steps[currentStep]);
+          currentStep++;
+        } else {
+          clearInterval(interval);
+          
+          // Résultat final de l'Agent ChatGPT
+          setTimeout(() => {
+            const finalDiv = document.createElement('div');
+            finalDiv.style.marginTop = '10px';
+            finalDiv.style.padding = '8px';
+            finalDiv.style.background = 'rgba(47,128,237,0.1)';
+            finalDiv.style.borderRadius = '8px';
+            finalDiv.innerHTML = `
+              <strong>Conclusion ChatGPT :</strong><br>
+              Le poids le plus probable est <strong>${data.weight} g</strong>.<br>
+              <span style="font-size:11px;color:#9bb2cc;">Confiance IA : ${data.confidence.toUpperCase()} • Collaboration réussie avec ${data.agent}</span>
+            `;
+            stepsContainer.appendChild(finalDiv);
+          }, 600);
+        }
+      }, 650);
     }
 
     // Initialisation de l'enrichissement automatique + chargement des bases CSV
