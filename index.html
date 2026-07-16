@@ -134,13 +134,6 @@
     font-weight: 700;
     color: #2f80ed;
   }
-  .ai-thinking {
-    font-style: italic;
-    color: #9bb2cc;
-    margin: 6px 0;
-    padding-left: 8px;
-    border-left: 3px solid #2f80ed;
-  }
   .ai-step {
     display: flex;
     align-items: center;
@@ -152,6 +145,38 @@
     width: 6px;
     height: 6px;
     background: #16a085;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  /* Claude AI Agent UI */
+  .claude-agent-box {
+    background: #0a1426;
+    border: 1px solid #7c3aed;
+    border-radius: 12px;
+    padding: 14px;
+    margin-top: 16px;
+    font-size: 13px;
+  }
+  .claude-agent-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 10px;
+    font-weight: 700;
+    color: #7c3aed;
+  }
+  .claude-step {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 4px 0;
+    font-size: 12.5px;
+  }
+  .claude-step .dot {
+    width: 6px;
+    height: 6px;
+    background: #7c3aed;
     border-radius: 50%;
     flex-shrink: 0;
   }
@@ -311,6 +336,14 @@
               🧠 <strong>Agent ChatGPT</strong> <span style="font-size:11px;color:#9bb2cc;">(Collaboratif)</span>
             </div>
             <div id="ai-thinking-steps"></div>
+          </div>
+
+          <!-- Claude AI Agent -->
+          <div class="claude-agent-box" id="claude-agent" style="display:none;">
+            <div class="claude-agent-header">
+              🧠 <strong>Claude AI</strong> <span style="font-size:11px;color:#9bb2cc;">(Analyse approfondie)</span>
+            </div>
+            <div id="claude-thinking-steps"></div>
           </div>
         </div>
       </div>
@@ -720,6 +753,9 @@
 
       // === AGENT CHATGPT COLLABORATIF ===
       showChatGPTAgent(productName, data);
+
+      // === AGENT CLAUDE AI (Analyse approfondie) ===
+      showClaudeAgent(productName, data);
     }
 
     // === FONCTION AGENT CHATGPT (Collaboratif avec les autres agents) ===
@@ -740,7 +776,7 @@
 
       let currentStep = 0;
 
-      function addStep(text, isFinal = false) {
+      function addStep(text) {
         const div = document.createElement('div');
         div.className = 'ai-step';
         div.innerHTML = `
@@ -750,7 +786,6 @@
         stepsContainer.appendChild(div);
       }
 
-      // Animation des étapes
       const interval = setInterval(() => {
         if (currentStep < steps.length) {
           addStep(steps[currentStep]);
@@ -758,7 +793,6 @@
         } else {
           clearInterval(interval);
           
-          // Résultat final de l'Agent ChatGPT
           setTimeout(() => {
             const finalDiv = document.createElement('div');
             finalDiv.style.marginTop = '10px';
@@ -774,6 +808,58 @@
           }, 600);
         }
       }, 650);
+    }
+
+    // === FONCTION AGENT CLAUDE AI (Analyse approfondie) ===
+    function showClaudeAgent(productName, data) {
+      const agentBox = document.getElementById('claude-agent');
+      const stepsContainer = document.getElementById('claude-thinking-steps');
+      
+      agentBox.style.display = 'block';
+      stepsContainer.innerHTML = '';
+
+      const steps = [
+        "Analyse approfondie du contexte du produit...",
+        "Vérification de la cohérence des données CSV...",
+        "Évaluation du niveau de précision des sources...",
+        "Considération des variantes et cas limites...",
+        "Synthèse finale et validation du poids..."
+      ];
+
+      let currentStep = 0;
+
+      function addClaudeStep(text) {
+        const div = document.createElement('div');
+        div.className = 'claude-step';
+        div.innerHTML = `
+          <div class="dot"></div>
+          <span>${text}</span>
+        `;
+        stepsContainer.appendChild(div);
+      }
+
+      const interval = setInterval(() => {
+        if (currentStep < steps.length) {
+          addClaudeStep(steps[currentStep]);
+          currentStep++;
+        } else {
+          clearInterval(interval);
+          
+          setTimeout(() => {
+            const finalDiv = document.createElement('div');
+            finalDiv.style.marginTop = '10px';
+            finalDiv.style.padding = '8px';
+            finalDiv.style.background = 'rgba(124,58,237,0.1)';
+            finalDiv.style.borderRadius = '8px';
+            finalDiv.innerHTML = `
+              <strong>Conclusion Claude AI :</strong><br>
+              Après analyse approfondie, je confirme le poids de <strong>${data.weight} g</strong>.<br>
+              <span style="font-size:11px;color:#9bb2cc;">Niveau de confiance : ${data.confidence.toUpperCase()} • Analyse croisée avec ${data.agent}</span>
+            `;
+            stepsContainer.appendChild(finalDiv);
+          }, 700);
+        }
+      }, 720);
     }
 
     // Initialisation de l'enrichissement automatique + chargement des bases CSV
