@@ -345,6 +345,12 @@
             </div>
             <div id="claude-thinking-steps"></div>
           </div>
+
+          <!-- Real AI Status -->
+          <div style="margin-top:12px;font-size:12px;color:#9bb2cc;">
+            <label style="display:block;margin-bottom:4px;">Clé API Groq (optionnel pour IA réelle) :</label>
+            <input type="text" id="groq-key" placeholder="gsk_..." style="width:100%;padding:6px;border-radius:6px;border:1px solid #2f80ed;background:#0a1426;color:#fff;font-size:12px;">
+          </div>
         </div>
       </div>
     </div>
@@ -731,8 +737,19 @@
       };
     }
 
-    function showSimulationResult(productName) {
-      const data = searchProductOnInternet(productName);
+    async function showSimulationResult(productName) {
+      let data = searchProductOnInternet(productName);
+
+      // === TENTATIVE D'APPEL RÉEL À L'IA (Groq) ===
+      const realAI = await callRealAI(productName);
+      if (realAI) {
+        data = {
+          weight: realAI.weight,
+          confidence: "high",
+          sources: [realAI.source, "Base CSV", "Agents IA"],
+          agent: "Agent IA Réelle (Groq)"
+        };
+      }
 
       simName.textContent = productName;
       simWeight.textContent = data.weight.toLocaleString('fr-FR');
@@ -864,6 +881,57 @@
           }, 700);
         }
       }, 720);
+    }
+
+    // === VRAIE IA (Groq) - Appel API réel ===
+    async function callRealAI(productName) {
+      const keyInput = document.getElementById('groq-key');
+      const apiKey = keyInput ? keyInput.value.trim() : '';
+
+      if (!apiKey) {
+        return null; // Pas de clé = on garde la simulation
+      }
+
+      try {
+        const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${apiKey}`,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            model: "llama-3.1-8b-instant",
+            messages: [
+              {
+                role: "system",
+                content: "Tu es un expert en poids de produits. Réponds uniquement avec le poids en grammes (nombre uniquement). Si tu ne connais pas, réponds avec une estimation réaliste."
+              },
+              {
+                role: "user",
+                content: `Quel est le poids exact d'un(e) ${productName} ? Réponds uniquement avec le nombre en grammes.`
+              }
+            ],
+            max_tokens: 10,
+            temperature: 0.1
+          })
+        });
+
+        if (!response.ok) return null;
+
+        const result = await response.json();
+        const weightText = result.choices[0].message.content.trim();
+        const weight = parseFloat(weightText);
+
+        if (!isNaN(weight) && weight > 0 && weight < 100000) {
+          return {
+            weight: weight,
+            source: "Groq (Llama 3.1)"
+          };
+        }
+      } catch (e) {
+        console.log("Erreur API Groq:", e);
+      }
+      return null;
     }
 
     // Initialisation de l'enrichissement automatique + chargement des bases CSV
