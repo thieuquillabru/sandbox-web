@@ -387,8 +387,9 @@
     </svg>
     <select class="tab-select" id="tab-select">
       <option value="change">Change</option>
-      <option value="poids">Poids</option>
+      <option value="exp-avion">Exp° Avion</option>
       <option value="simulation">Simulation</option>
+      <option value="exp-bat">Exp° Bat</option>
     </select>
   </div>
 
@@ -481,33 +482,88 @@
     </div>
   </div>
 
-  <!-- Onglet Poids -->
-  <div class="tabview" id="tab-poids">
+  <!-- Onglet Exp° Avion -->
+    <div class="tabview" id="tab-exp-avion">
+      <div class="head">
+        <div class="eyebrow">Logistique Aérienne</div>
+        <h1>Expédition par Avion</h1>
+        <div class="sub">Calcul des frais d’expédition aérienne depuis la Chine vers Madagascar</div>
+      </div>
+      <div class="card">
+        <div class="field">
+          <label>1. Poids du produit (grammes)</label>
+          <input type="number" id="grams" value="1000" min="0" step="1" inputmode="decimal" />
+        </div>
+        <div class="field">
+          <label>2. Type d’envoi</label>
+          <div class="shipchoice">
+            <button type="button" class="shipbtn active" data-mode="express">Envoi express<span>83 000 Ar/kg</span></button>
+            <button type="button" class="shipbtn" data-mode="normal">Envoi normal<span>70 000 Ar/kg</span></button>
+          </div>
+        </div>
+        <div class="field" style="margin-top:14px;">
+          <label>3. Prix d’envoi estimé (Ariary)</label>
+          <div class="result">
+            <span class="big" id="shipOut">-</span><span class="unit">Ar</span>
+            <div class="formula">Prix (Ar) = poids (g) × tarif (Ar/kg) / 1 000</div>
+          </div>
+        </div>
+        <div class="foot">Express : 83 000 Ar/kg • Normal : 70 000 Ar/kg</div>
+      </div>
+    </div>
+
+  <!-- Onglet Exp° Bat (Maritime) -->
+  <div class="tabview" id="tab-exp-bat">
     <div class="head">
-      <div class="eyebrow">Logistique / Frais d’envoi</div>
-      <h1>Calculateur de poids</h1>
-      <div class="sub">Estimation du coût d’expédition depuis la Chine vers Madagascar</div>
+      <div class="eyebrow">Logistique Maritime</div>
+      <h1>Expédition par Bateau</h1>
+      <div class="sub">Calcul du coût d’expédition maritime (par m³) vers Madagascar</div>
     </div>
     <div class="card">
       <div class="field">
-        <label>1. Poids du produit (grammes)</label>
-        <input type="number" id="grams" value="1000" min="0" step="1" inputmode="decimal" />
+        <label>Dimensions du colis (cm)</label>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;">
+          <div>
+            <input type="number" id="length" value="50" min="1" placeholder="Longueur">
+            <div style="font-size:10px;color:#9bb2cc;margin-top:3px;text-align:center;">Longueur</div>
+          </div>
+          <div>
+            <input type="number" id="width" value="40" min="1" placeholder="Largeur">
+            <div style="font-size:10px;color:#9bb2cc;margin-top:3px;text-align:center;">Largeur</div>
+          </div>
+          <div>
+            <input type="number" id="height" value="30" min="1" placeholder="Hauteur">
+            <div style="font-size:10px;color:#9bb2cc;margin-top:3px;text-align:center;">Hauteur</div>
+          </div>
+        </div>
       </div>
+
+      <div class="field" style="margin-top:10px;">
+        <label>Volume calculé</label>
+        <div class="result" style="padding:12px 16px;">
+          <span class="big" id="volume-m3" style="font-size:28px;">0.060</span>
+          <span class="unit">m³</span>
+        </div>
+      </div>
+
       <div class="field">
-        <label>2. Type d’envoi</label>
+        <label>Type de produit</label>
         <div class="shipchoice">
-          <button type="button" class="shipbtn active" data-mode="express">Envoi express<span>83 000 Ar/kg</span></button>
-          <button type="button" class="shipbtn" data-mode="normal">Envoi normal<span>70 000 Ar/kg</span></button>
+          <button type="button" class="shipbtn active" data-type="general">Produit général<span>360 $ / m³</span></button>
+          <button type="button" class="shipbtn" data-type="battery">Batterie ou &lt; 0.25m³<span>410 $ / m³</span></button>
         </div>
       </div>
+
       <div class="field" style="margin-top:14px;">
-        <label>3. Prix d’envoi estimé (Ariary)</label>
+        <label>Prix d’expédition estimé</label>
         <div class="result">
-          <span class="big" id="shipOut">-</span><span class="unit">Ar</span>
-          <div class="formula">Prix (Ar) = poids (g) × tarif (Ar/kg) / 1 000</div>
+          <span class="big" id="maritime-price" style="color:#e0a800;">—</span>
+          <span class="unit">$</span>
+          <div class="formula" id="maritime-formula">360 $ × 0.060 m³</div>
         </div>
       </div>
-      <div class="foot">Express : 83 000 Ar/kg • Normal : 70 000 Ar/kg</div>
+
+      <div class="foot">Tarif maritime : 360 $/m³ (général) • 410 $/m³ (batterie ou &lt; 0.25 m³)</div>
     </div>
   </div>
 
@@ -636,6 +692,57 @@
       });
     });
     calcShip();
+
+    // === ONGLET EXP° BAT (MARITIME) ===
+    const lengthEl = document.getElementById('length');
+    const widthEl = document.getElementById('width');
+    const heightEl = document.getElementById('height');
+    const volumeEl = document.getElementById('volume-m3');
+    const maritimePriceEl = document.getElementById('maritime-price');
+    const maritimeFormulaEl = document.getElementById('maritime-formula');
+    const maritimeBtns = document.querySelectorAll('#tab-exp-bat .shipbtn');
+
+    let maritimeType = 'general';
+
+    function calculateMaritime() {
+      const l = parseFloat(lengthEl.value) || 0;
+      const w = parseFloat(widthEl.value) || 0;
+      const h = parseFloat(heightEl.value) || 0;
+
+      const volumeM3 = (l * w * h) / 1000000; // cm³ → m³
+      volumeEl.textContent = volumeM3.toFixed(3);
+
+      let rate = 360;
+      let label = "Produit général";
+
+      if (maritimeType === 'battery' || volumeM3 < 0.25) {
+        rate = 410;
+        label = volumeM3 < 0.25 ? "Commande < 0.25m³" : "Produit batterie";
+      }
+
+      const priceUSD = (volumeM3 * rate).toFixed(2);
+      maritimePriceEl.textContent = priceUSD;
+
+      maritimeFormulaEl.textContent = `${rate} $ × ${volumeM3.toFixed(3)} m³ = ${priceUSD} $`;
+    }
+
+    // Écouteurs pour les dimensions
+    [lengthEl, widthEl, heightEl].forEach(el => {
+      el.addEventListener('input', calculateMaritime);
+    });
+
+    // Boutons type de produit
+    maritimeBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        maritimeBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        maritimeType = btn.getAttribute('data-type');
+        calculateMaritime();
+      });
+    });
+
+    // Calcul initial
+    setTimeout(calculateMaritime, 300);
 
     // === SIMULATION PRODUIT - SYSTÈME DE POIDS RÉALISTE ===
     const simInput = document.getElementById('product-name');
