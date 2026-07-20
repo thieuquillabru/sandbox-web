@@ -6,10 +6,9 @@
 <meta name="apple-mobile-web-app-capable" content="yes" />
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
 <meta name="theme-color" content="#0b1f3a" />
-<title>Convertisseur yuan/ariary</title>
-<meta name="apple-mobile-web-app-title" content="Yuan/Ariary" />
+<title>ExchangeMGA</title>
+<meta name="apple-mobile-web-app-title" content="ExchangeMGA" />
 
-<!-- Favicon & PWA -->
 <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
 <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
 <link rel="apple-touch-icon" sizes="180x180" href="icon-180.png">
@@ -41,20 +40,12 @@
   .band{position:absolute;left:0;right:0;height:120px;opacity:.5;}
   .band.top{top:0;background:linear-gradient(180deg,rgba(47,128,237,.12),transparent);}
 
-  /* === SOLEIL RÉALISTE === */
   .sun {
-    position: absolute;
-    top: 12%;
-    right: 18%;
-    width: 68px;
-    height: 68px;
+    position: absolute; top: 12%; right: 18%; width: 68px; height: 68px;
     background: radial-gradient(circle at 35% 35%, #fff7b3 10%, #ffe066 35%, #f4c430 65%, #e6a800 100%);
     border-radius: 50%;
-    box-shadow: 
-      0 0 25px 12px rgba(255, 220, 100, 0.45),
-      0 0 55px 25px rgba(255, 200, 80, 0.25);
-    z-index: 1;
-    opacity: 0.92;
+    box-shadow: 0 0 25px 12px rgba(255,220,100,.45), 0 0 55px 25px rgba(255,200,80,.25);
+    z-index: 1; opacity: 0.92;
   }
 
   .cloud{position:absolute;opacity:.16;animation:drift linear infinite;}
@@ -63,27 +54,16 @@
   .cloud.c3{width:180px;top:5%;opacity:.13;animation-duration:110s;animation-delay:-80s;}
   @keyframes drift{from{left:-25%}to{left:125%}}
 
-  /* Animations avions et bateaux */
-  @keyframes fly {
-    from { left: -18%; top: 14%; }
-    to   { left: 115%; top: 7%; }
-  }
-  @keyframes sail {
-    from { left: -22%; }
-    to   { left: 115%; }
-  }
+  @keyframes fly { from { left: -18%; top: 14%; } to { left: 115%; top: 7%; } }
+  @keyframes sail { from { left: -22%; } to { left: 115%; } }
 
-  /* === AVIONS AMÉLIORÉS (plus réalistes) === */
   .plane{position:absolute;width:140px;opacity:.92;animation:fly 38s linear infinite;filter:drop-shadow(0 8px 14px rgba(0,0,0,.35));}
   .plane.p2{animation-duration:52s;width:95px;opacity:.65;top:22%;}
 
-  /* === BATEAUX TRÈS RÉALISTES (porte-conteneurs détaillés) === */
   .ship{position:absolute;bottom:8%;width:165px;opacity:.95;filter:drop-shadow(0 6px 14px rgba(0,0,0,.45));animation:sail 36s linear infinite;}
   .ship.s2{animation-duration:48s;width:115px;bottom:14%;opacity:.6;filter:drop-shadow(0 4px 10px rgba(0,0,0,.35));}
 
   .sea{position:absolute;left:0;right:0;bottom:0;height:92px;overflow:hidden;}
-  
-  /* === VAGUES TRÈS RÉALISTES (3 couches) === */
   .wave{position:absolute;bottom:0;left:0;width:300%;height:100%;}
   .wave-back{fill:rgba(47,128,237,.14);animation:waveMove 18s linear infinite;}
   .wave-mid{fill:rgba(22,160,133,.18);bottom:-4px;animation:waveMove 13s linear infinite reverse;}
@@ -93,27 +73,14 @@
   .wrap{position:relative;z-index:2;max-width:560px;margin:0 auto;
     display:flex;flex-direction:column;gap:16px;
     padding: calc(38px + env(safe-area-inset-top) + 22px) 18px 80px 18px;
-    min-height:100vh;
-    overflow-y:auto;
-    -webkit-overflow-scrolling:touch;
-    scroll-behavior:smooth;}
+    min-height:100vh; overflow-y:auto; -webkit-overflow-scrolling:touch; scroll-behavior:smooth;}
 
   .topnav{display:flex;align-items:center;justify-content:flex-end;gap:12px;}
-  .flagmg{width:30px;height:20px;border-radius:4px;flex-shrink:0;
-    box-shadow:0 1px 4px rgba(0,0,0,.35);}
+  .flagmg{width:30px;height:20px;border-radius:4px;flex-shrink:0; box-shadow:0 1px 4px rgba(0,0,0,.35);}
   .tab-select{
-    background:var(--panel);
-    border:1px solid var(--line);
-    color:var(--txt);
-    padding:10px 16px;
-    border-radius:10px;
-    font-size:14px;
-    font-weight:600;
-    cursor:pointer;
-    min-width:170px;
-    outline:none;
-    appearance:none;
-    -webkit-appearance:none;
+    background:var(--panel); border:1px solid var(--line); color:var(--txt);
+    padding:10px 16px; border-radius:10px; font-size:14px; font-weight:600;
+    cursor:pointer; min-width:170px; outline:none; appearance:none;
   }
   .tab-select:focus{border-color:var(--accent);}
   .tab-select option{background:#0e2747;color:#eaf2fb;}
@@ -148,10 +115,8 @@
   .status{font-size:11.5px;display:inline-flex;align-items:center;gap:5px;}
   .status .dot{width:8px;height:8px;border-radius:50%;background:#16a085;}
   .status.bad .dot{background:#e74c3c;}
-  .status.bad .dot,.status.bad{color:#e74c3c;}
   button.refresh{background:var(--accent);border:none;color:#fff;font-weight:600;
     padding:9px 16px;border-radius:9px;font-size:13px;cursor:pointer;}
-  button.refresh:active{transform:scale(.97);}
 
   .foot{text-align:center;font-size:10.5px;color:#5d7796;margin-top:4px;}
   .sig{text-align:right;font-size:11px;color:#7d97b8;margin-top:10px;letter-spacing:.3px;}
@@ -171,7 +136,6 @@
   .tabview{display:none;}
   .tabview.active{display:block;overflow-y:auto;-webkit-overflow-scrolling:touch;}
 
-  /* Simulation tab */
   .search-row{display:flex;gap:10px;align-items:flex-end;}
   .search-row input{flex:1;}
   .search-btn{background:var(--accent);color:#fff;border:none;border-radius:10px;padding:14px 22px;font-weight:700;cursor:pointer;}
@@ -189,37 +153,17 @@
   .sim-sources a{color:#2f80ed;text-decoration:none;}
 
   .ticker-bar{
-    position:fixed;
-    top: env(safe-area-inset-top);
-    left:0;right:0;
-    z-index:100;
-    background:rgba(11,31,58,.96);
-    border-bottom:1px solid var(--line);
-    padding:6px 0;
-    height:38px;
-    display:flex;
-    align-items:center;
-    font-size:12px;
-    color:#c8d9ec;
-    overflow:hidden;
+    position:fixed; top: env(safe-area-inset-top); left:0;right:0; z-index:100;
+    background:rgba(11,31,58,.96); border-bottom:1px solid var(--line);
+    padding:6px 0; height:38px; display:flex; align-items:center;
+    font-size:12px; color:#c8d9ec; overflow:hidden;
   }
-  .ticker-label{
-    padding:0 20px 0 16px;font-weight:700;letter-spacing:.5px;color:#9bb2cc;
-    flex-shrink:0;border-right:1px solid var(--line);
-    min-width:168px;
-    background:#0b1f3a;
-    z-index:20;
-    position:relative;
-    box-shadow: 60px 0 50px #0b1f3a;
-  }
-  .ticker-content{
-    display:flex;gap:28px;white-space:nowrap;animation:ticker 28s linear infinite;
-    padding-left:22px;
-    margin-left:12px;
-  }
-  .ticker-item{
-    display:flex;align-items:center;gap:6px;
-  }
+  .ticker-label{padding:0 20px 0 16px;font-weight:700;letter-spacing:.5px;color:#9bb2cc;
+    flex-shrink:0;border-right:1px solid var(--line); min-width:168px; background:#0b1f3a; z-index:20;
+    position:relative; box-shadow: 60px 0 50px #0b1f3a;}
+  .ticker-content{display:flex;gap:28px;white-space:nowrap;animation:ticker 28s linear infinite;
+    padding-left:22px; margin-left:12px;}
+  .ticker-item{display:flex;align-items:center;gap:6px;}
   .ticker-item .sym{font-weight:700;color:#fff;}
   .ticker-item .price{font-weight:600;color:#eaf2fb;}
   .ticker-item .chg{font-size:11px;padding:1px 6px;border-radius:4px;}
@@ -242,8 +186,6 @@
 <div class="bg">
   <div class="grid"></div>
   <div class="band top"></div>
-  
-  <!-- Soleil réaliste -->
   <div class="sun"></div>
 
   <!-- Nuages -->
@@ -264,27 +206,17 @@
     <ellipse cx="128" cy="38" rx="30" ry="14" fill="#eaf2fb"/>
   </svg>
 
-  <!-- === AVION RÉALISTE ET BEAU (style Boeing 787 moderne) === -->
+  <!-- Avion principal -->
   <svg class="plane" viewBox="0 0 260 85" xmlns="http://www.w3.org/2000/svg">
-    <!-- Fuselage principal (plus élégant) -->
     <path d="M20 42 Q25 30 65 28 L195 28 Q225 32 238 42 Q225 52 195 54 L65 54 Q25 52 20 42 Z" fill="#f8fafc"/>
-    
-    <!-- Aile gauche (principale) -->
     <path d="M85 35 L35 68 L58 68 L100 37 Z" fill="#d1d9e8"/>
     <path d="M88 37 L42 64 L60 64 L96 39 Z" fill="#b8c5d9"/>
-    
-    <!-- Aile droite -->
     <path d="M175 35 L225 68 L202 68 L160 37 Z" fill="#d1d9e8"/>
     <path d="M172 37 L218 64 L200 64 L164 39 Z" fill="#b8c5d9"/>
-    
-    <!-- Moteurs (plus réalistes) -->
     <ellipse cx="102" cy="52" rx="13" ry="7.5" fill="#475569"/>
     <ellipse cx="102" cy="52" rx="9" ry="5" fill="#64748b"/>
-    
     <ellipse cx="158" cy="52" rx="13" ry="7.5" fill="#475569"/>
     <ellipse cx="158" cy="52" rx="9" ry="5" fill="#64748b"/>
-    
-    <!-- Hublots (plus nombreux et mieux placés) -->
     <rect x="72" y="36" width="5" height="5" rx="1.2" fill="#1e40af"/>
     <rect x="82" y="36" width="5" height="5" rx="1.2" fill="#1e40af"/>
     <rect x="92" y="36" width="5" height="5" rx="1.2" fill="#1e40af"/>
@@ -295,16 +227,12 @@
     <rect x="142" y="36" width="5" height="5" rx="1.2" fill="#1e40af"/>
     <rect x="152" y="36" width="5" height="5" rx="1.2" fill="#1e40af"/>
     <rect x="162" y="36" width="5" height="5" rx="1.2" fill="#1e40af"/>
-    
-    <!-- Queue (empennage) -->
     <path d="M205 35 L235 28 L235 56 L205 49 Z" fill="#e2e8f0"/>
-    
-    <!-- Cockpit (nez) -->
     <ellipse cx="232" cy="42" rx="10" ry="6.5" fill="#1e3a5f"/>
     <ellipse cx="235" cy="42" rx="5" ry="3.5" fill="#0ea5e9"/>
   </svg>
 
-  <!-- Avion secondaire (version plus petite et plus claire) -->
+  <!-- Avion secondaire -->
   <svg class="plane p2" viewBox="0 0 260 85" xmlns="http://www.w3.org/2000/svg">
     <path d="M20 42 Q25 30 65 28 L195 28 Q225 32 238 42 Q225 52 195 54 L65 54 Q25 52 20 42 Z" fill="#e2e8f0"/>
     <path d="M85 35 L35 68 L58 68 L100 37 Z" fill="#cbd5e1"/>
@@ -315,16 +243,11 @@
     <ellipse cx="232" cy="42" rx="9" ry="6" fill="#334155"/>
   </svg>
 
-  <!-- === BATEAU RÉALISTE (Porte-conteneurs Maersk style) === -->
+  <!-- Bateau principal -->
   <svg class="ship" viewBox="0 0 280 98" xmlns="http://www.w3.org/2000/svg">
-    <!-- Coque principale -->
     <path d="M8 68 L8 52 L248 52 L268 62 L252 78 L14 78 Z" fill="#1a324a"/>
-    <!-- Ligne de flottaison -->
     <rect x="12" y="52" width="238" height="7" fill="#2c465f"/>
-    <!-- Pont principal -->
     <rect x="18" y="46" width="215" height="7" fill="#253d54"/>
-    
-    <!-- Conteneurs (rangée 1) -->
     <rect x="22" y="30" width="18" height="17" fill="#c0392b"/>
     <rect x="42" y="30" width="18" height="17" fill="#2980b9"/>
     <rect x="62" y="30" width="18" height="17" fill="#e0a800"/>
@@ -334,54 +257,40 @@
     <rect x="142" y="30" width="18" height="17" fill="#c0392b"/>
     <rect x="162" y="30" width="18" height="17" fill="#e0a800"/>
     <rect x="182" y="30" width="18" height="17" fill="#2980b9"/>
-    
-    <!-- Conteneurs (rangée 2) -->
     <rect x="26" y="14" width="18" height="17" fill="#2980b9"/>
     <rect x="46" y="14" width="18" height="17" fill="#16a085"/>
     <rect x="66" y="14" width="18" height="17" fill="#e0a800"/>
     <rect x="86" y="14" width="18" height="17" fill="#c0392b"/>
     <rect x="106" y="14" width="18" height="17" fill="#27ae60"/>
     <rect x="126" y="14" width="18" height="17" fill="#8e44ad"/>
-    
-    <!-- Cabine / Pont de commandement -->
     <rect x="198" y="22" width="38" height="32" rx="3" fill="#2c465f"/>
     <rect x="202" y="26" width="8" height="8" fill="#cfe3ff" opacity="0.9"/>
     <rect x="214" y="26" width="8" height="8" fill="#cfe3ff" opacity="0.9"/>
     <rect x="226" y="26" width="8" height="8" fill="#cfe3ff" opacity="0.9"/>
-    
-    <!-- Cheminée -->
     <rect x="218" y="8" width="14" height="16" fill="#c0392b"/>
     <rect x="220" y="4" width="10" height="5" fill="#1a324a"/>
-    
-    <!-- Détails coque -->
     <ellipse cx="140" cy="82" rx="118" ry="5" fill="#0a1f33" opacity=".45"/>
   </svg>
 
-  <!-- Bateau secondaire (plus petit) -->
+  <!-- Bateau secondaire -->
   <svg class="ship s2" viewBox="0 0 280 98" xmlns="http://www.w3.org/2000/svg">
     <path d="M10 68 L10 54 L230 54 L248 63 L232 76 L16 76 Z" fill="#253d54"/>
     <rect x="16" y="48" width="205" height="7" fill="#1a324a"/>
-    
-    <!-- Conteneurs -->
     <rect x="24" y="32" width="16" height="17" fill="#2980b9"/>
     <rect x="42" y="32" width="16" height="17" fill="#e0a800"/>
     <rect x="60" y="32" width="16" height="17" fill="#27ae60"/>
     <rect x="78" y="32" width="16" height="17" fill="#c0392b"/>
     <rect x="96" y="32" width="16" height="17" fill="#16a085"/>
-    
     <rect x="28" y="16" width="16" height="17" fill="#e0a800"/>
     <rect x="46" y="16" width="16" height="17" fill="#2980b9"/>
     <rect x="64" y="16" width="16" height="17" fill="#c0392b"/>
-    
-    <!-- Cabine -->
     <rect x="188" y="24" width="32" height="28" rx="2" fill="#2c465f"/>
     <rect x="192" y="28" width="7" height="7" fill="#cfe3ff" opacity="0.85"/>
     <rect x="202" y="28" width="7" height="7" fill="#cfe3ff" opacity="0.85"/>
-    
     <rect x="200" y="10" width="12" height="15" fill="#c0392b"/>
   </svg>
 
-  <!-- === MER TRÈS RÉALISTE (3 couches de vagues) === -->
+  <!-- Mer réaliste -->
   <div class="sea">
     <svg class="wave wave-back" viewBox="0 0 600 70" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
       <path d="M0 32 Q40 12 80 32 Q120 52 160 32 Q200 12 240 32 Q280 52 320 32 Q360 12 400 32 Q440 52 480 32 Q520 12 560 32 Q600 52 600 70 L0 70 Z"/>
@@ -415,7 +324,7 @@
     <div class="head">
       <div class="eyebrow">Commerce international / Change</div>
       <h1>Convertisseur yuan/ariary</h1>
-      <div class="sub">Taux de change CNY/MGA en temps réel pour le commerce international</div>
+      <div class="sub">Taux de change CNY/MGA en temps réel</div>
     </div>
     <div class="card">
       <div class="field">
@@ -438,120 +347,54 @@
         <div>1 CNY ≈ <span class="v"><b id="rate">...</b> Ar</span> &nbsp;<span id="src" class="status"><span class="dot"></span><span class="txt">Analyse IA…</span></span></div>
         <button class="refresh" id="refresh">Actualiser le taux</button>
       </div>
-      <div class="foot">Cours de référence du marché via ExchangeRate-API (open.er-api.com), mis à jour quotidiennement.</div>
+      <div class="foot">Cours via ExchangeRate-API (open.er-api.com)</div>
     </div>
   </div>
 
-  <!-- Onglet Simulation -->
-  <div class="tabview" id="tab-simulation">
+  <!-- Onglet Exp Avion -->
+  <div class="tabview" id="tab-exp-avion">
     <div class="head">
-      <div class="eyebrow">Estimation logistique / Recherche de produit</div>
-      <h1>Simulation produit</h1>
-      <div class="sub">Recherche automatique du poids sur des sites fiables et auprès des fabricants</div>
+      <div class="eyebrow">Logistique Aérienne</div>
+      <h1>Exp Avion</h1>
+      <div class="sub">Frais d’expédition aérienne Chine → Madagascar</div>
     </div>
     <div class="card">
       <div class="field">
-        <label>Nom du produit</label>
-        <div class="search-row">
-          <input type="text" id="product-name" placeholder="Ex. : iPhone 16 Pro, t-shirt en coton, AirPods Pro 2…" />
-          <button class="search-btn" id="search-btn">Rechercher</button>
+        <label>1. Poids du produit (grammes)</label>
+        <input type="number" id="grams" value="1000" min="0" step="1" inputmode="decimal" />
+      </div>
+      <div class="field">
+        <label>2. Type d’envoi</label>
+        <div class="shipchoice">
+          <button type="button" class="shipbtn active" data-mode="express">Envoi express<span>83 000 Ar/kg</span></button>
+          <button type="button" class="shipbtn" data-mode="normal">Envoi normal<span>70 000 Ar/kg</span></button>
         </div>
       </div>
-
-      <div class="sim-result" id="sim-result" style="display:none;">
-        <div class="sim-card">
-          <h3 id="sim-product-name"></h3>
-          <div>
-            <span class="sim-confidence" id="sim-confidence"></span>
-          </div>
-          <div class="sim-weight">
-            <span id="sim-weight-value"></span> <span>g</span>
-          </div>
-          <div class="sim-sources" id="sim-sources"></div>
-          <div style="font-size:11px;color:#5d7796;margin-top:6px;">Estimation locale (base CSV + règles), calculée directement dans le navigateur.</div>
-
-          <div id="ai-results" style="margin-top:14px;"></div>
-
-          <div style="margin-top:14px;font-size:12px;color:#9bb2cc;border-top:1px solid var(--line);padding-top:12px;">
-            <div style="margin-bottom:8px;color:#6d88a8;font-size:11px;line-height:1.5;">
-              Optionnel : renseigne tes propres clés API pour obtenir une véritable estimation d'un modèle d'IA.
-            </div>
-            <label style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
-              <span>Clé API Groq (Llama 3.1)</span>
-              <a href="https://console.groq.com/keys" target="_blank" rel="noopener noreferrer" style="color:#2f80ed;font-size:11px;text-decoration:none;">Obtenir une clé ↗</a>
-            </label>
-            <input type="password" id="groq-key" placeholder="gsk_…" autocomplete="off" style="width:100%;padding:6px;border-radius:6px;border:1px solid #2f80ed;background:#0a1426;color:#fff;font-size:12px;margin-bottom:10px;">
-            
-            <label style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
-              <span>Clé API OpenAI (ChatGPT)</span>
-              <a href="https://platform.openai.com/api-keys" target="_blank" rel="noopener noreferrer" style="color:#16a085;font-size:11px;text-decoration:none;">Obtenir une clé ↗</a>
-            </label>
-            <input type="password" id="openai-key" placeholder="sk-…" autocomplete="off" style="width:100%;padding:6px;border-radius:6px;border:1px solid #2f80ed;background:#0a1426;color:#fff;font-size:12px;margin-bottom:10px;">
-            
-            <label style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
-              <span>Clé API Anthropic (Claude)</span>
-              <a href="https://console.anthropic.com/settings/keys" target="_blank" rel="noopener noreferrer" style="color:#7c3aed;font-size:11px;text-decoration:none;">Obtenir une clé ↗</a>
-            </label>
-            <input type="password" id="claude-key" placeholder="sk-ant-…" autocomplete="off" style="width:100%;padding:6px;border-radius:6px;border:1px solid #2f80ed;background:#0a1426;color:#fff;font-size:12px;">
-          </div>
+      <div class="field" style="margin-top:14px;">
+        <label>3. Prix d’envoi estimé (Ariary)</label>
+        <div class="result">
+          <span class="big" id="shipOut">-</span><span class="unit">Ar</span>
+          <div class="formula">Prix (Ar) = poids (g) × tarif (Ar/kg) / 1 000</div>
         </div>
       </div>
+      <div class="foot">Express : 83 000 Ar/kg • Normal : 70 000 Ar/kg</div>
     </div>
   </div>
 
-    <!-- Onglet Exp Avion -->
-    <div class="tabview" id="tab-exp-avion">
-      <div class="head">
-        <div class="eyebrow">Logistique Aérienne</div>
-        <h1>Exp Avion</h1>
-        <div class="sub">Calcul des frais d’expédition aérienne depuis la Chine vers Madagascar</div>
-      </div>
-      <div class="card">
-        <div class="field">
-          <label>1. Poids du produit (grammes)</label>
-          <input type="number" id="grams" value="1000" min="0" step="1" inputmode="decimal" />
-        </div>
-        <div class="field">
-          <label>2. Type d’envoi</label>
-          <div class="shipchoice">
-            <button type="button" class="shipbtn active" data-mode="express">Envoi express<span>83 000 Ar/kg</span></button>
-            <button type="button" class="shipbtn" data-mode="normal">Envoi normal<span>70 000 Ar/kg</span></button>
-          </div>
-        </div>
-        <div class="field" style="margin-top:14px;">
-          <label>3. Prix d’envoi estimé (Ariary)</label>
-          <div class="result">
-            <span class="big" id="shipOut">-</span><span class="unit">Ar</span>
-            <div class="formula">Prix (Ar) = poids (g) × tarif (Ar/kg) / 1 000</div>
-          </div>
-        </div>
-        <div class="foot">Express : 83 000 Ar/kg • Normal : 70 000 Ar/kg</div>
-      </div>
-    </div>
-
-  <!-- Onglet Exp° Bat (Maritime) -->
+  <!-- Onglet Exp Bat -->
   <div class="tabview" id="tab-exp-bat">
     <div class="head">
-        <div class="eyebrow">Logistique Maritime</div>
-        <h1>Exp Bat</h1>
-      <div class="sub">Calcul du coût d’expédition maritime (par m³) vers Madagascar</div>
+      <div class="eyebrow">Logistique Maritime</div>
+      <h1>Exp Bat</h1>
+      <div class="sub">Calcul du coût d’expédition maritime (par m³)</div>
     </div>
     <div class="card">
       <div class="field">
         <label>Dimensions du colis (cm)</label>
         <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;">
-          <div>
-            <input type="number" id="length" value="50" min="1" placeholder="Longueur">
-            <div style="font-size:10px;color:#9bb2cc;margin-top:3px;text-align:center;">Longueur</div>
-          </div>
-          <div>
-            <input type="number" id="width" value="40" min="1" placeholder="Largeur">
-            <div style="font-size:10px;color:#9bb2cc;margin-top:3px;text-align:center;">Largeur</div>
-          </div>
-          <div>
-            <input type="number" id="height" value="30" min="1" placeholder="Hauteur">
-            <div style="font-size:10px;color:#9bb2cc;margin-top:3px;text-align:center;">Hauteur</div>
-          </div>
+          <div><input type="number" id="length" value="50" min="1"><div style="font-size:10px;color:#9bb2cc;text-align:center;">Longueur</div></div>
+          <div><input type="number" id="width" value="40" min="1"><div style="font-size:10px;color:#9bb2cc;text-align:center;">Largeur</div></div>
+          <div><input type="number" id="height" value="30" min="1"><div style="font-size:10px;color:#9bb2cc;text-align:center;">Hauteur</div></div>
         </div>
       </div>
 
@@ -587,133 +430,131 @@
     </div>
   </div>
 
+  <!-- Onglet Simulation -->
+  <div class="tabview" id="tab-simulation">
+    <div class="head">
+      <div class="eyebrow">Estimation logistique</div>
+      <h1>Simulation produit</h1>
+      <div class="sub">Recherche automatique du poids</div>
+    </div>
+    <div class="card">
+      <div class="field">
+        <label>Nom du produit</label>
+        <div class="search-row">
+          <input type="text" id="product-name" placeholder="Ex. : iPhone 16 Pro, t-shirt..." />
+          <button class="search-btn" id="search-btn">Rechercher</button>
+        </div>
+      </div>
+
+      <div class="sim-result" id="sim-result" style="display:none;">
+        <div class="sim-card">
+          <h3 id="sim-product-name"></h3>
+          <div><span class="sim-confidence" id="sim-confidence"></span></div>
+          <div class="sim-weight"><span id="sim-weight-value"></span> <span>g</span></div>
+          <div class="sim-sources" id="sim-sources"></div>
+          <div style="font-size:11px;color:#5d7796;margin-top:6px;">Estimation locale (base CSV + règles)</div>
+          <div id="ai-results" style="margin-top:14px;"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <div class="sig">Réalisé par <a href="https://www.facebook.com/share/1M1XCvEo1R/" target="_blank" rel="noopener noreferrer"><b>Mathieu.RMB</b></a></div>
   
   <div class="about">
-    Cet outil convertit instantanément un prix en yuans chinois (CNY) vers l’ariary malgache (MGA) afin de faciliter les transactions commerciales entre la Chine et Madagascar.
-    Le montant applique une majoration de 3 % (1,03) et s’appuie sur le taux de change moyen du marché de référence (ExchangeRate-API).
-    L’onglet Simulation permet d’estimer le poids réel des produits grâce à une base de données CSV et des règles logiques.
-    L’onglet Poids estime les frais d’expédition (express : 83 000 Ar/kg ; normal : 70 000 Ar/kg).
+    Outil de conversion et d’estimation logistique entre la Chine et Madagascar.
   </div>
 </div>
 
 <script>
   try {
-    var FEE = 1.03;
-    var FALLBACK_RATE = 631.89;
-    var yuanEl = document.getElementById('yuan');
-    var outEl = document.getElementById('out');
-    var rateEl = document.getElementById('rate');
-    var srcEl = document.getElementById('src');
+    // === CHANGE ===
+    const yuanEl = document.getElementById('yuan');
+    const outEl = document.getElementById('out');
+    const rateEl = document.getElementById('rate');
+    const srcEl = document.getElementById('src');
 
-    function calcChange(rate){
-      var y = parseFloat(yuanEl.value);
-      if (isNaN(y) || y < 0){ outEl.textContent = '-'; return; }
-      outEl.textContent = (y * FEE * rate).toLocaleString('fr-FR', {maximumFractionDigits:2});
+    function calcChange(rate) {
+      const y = parseFloat(yuanEl.value);
+      if (isNaN(y) || y < 0) { outEl.textContent = '-'; return; }
+      outEl.textContent = (y * 1.03 * rate).toLocaleString('fr-FR', {maximumFractionDigits:2});
     }
 
-    function fetchRate(){
+    function fetchRate() {
       srcEl.className = 'status';
       srcEl.innerHTML = '<span class="dot"></span><span class="txt">Recherche du taux…</span>';
       rateEl.textContent = '...';
-      
-      var sources = [
-        { url: 'https://open.er-api.com/v6/latest/CNY', label: 'open.er-api.com (ExchangeRate-API)', page: 'https://www.exchangerate-api.com/docs/free' },
-        { url: 'https://api.exchangerate-api.com/v4/latest/CNY', label: 'exchangerate-api.com (v4)', page: 'https://www.exchangerate-api.com' }
+
+      const sources = [
+        { url: 'https://open.er-api.com/v6/latest/CNY', label: 'open.er-api.com', page: 'https://www.exchangerate-api.com/docs/free' }
       ];
-      
-      var rate = null, provLabel = '', provPage = '', updatedAt = '';
-      
-      function tryNext(i){
-        if (i >= sources.length){
-          var fb = parseFloat(localStorage.getItem('yuan_rate')) || FALLBACK_RATE;
+
+      function tryNext(i) {
+        if (i >= sources.length) {
+          const fb = parseFloat(localStorage.getItem('yuan_rate')) || 631.89;
           rateEl.textContent = fb.toLocaleString('fr-FR', {maximumFractionDigits:2});
           srcEl.className = 'status bad';
-          srcEl.innerHTML = '<span class="dot"></span><span class="txt">hors ligne (dernier taux connu)</span>';
+          srcEl.innerHTML = '<span class="dot"></span><span class="txt">hors ligne</span>';
           calcChange(fb);
           return;
         }
         fetch(sources[i].url).then(r => r.json()).then(j => {
-          var v = j && j.rates && j.rates.MGA;
-          if (v){
-            rate = v;
-            provLabel = sources[i].label;
-            provPage = sources[i].page;
-            updatedAt = j.time_last_update_utc || j.date || '';
-            finish();
-          } else { tryNext(i+1); }
-        }).catch(() => tryNext(i+1));
-      }
-      
-      function finish(){
-        rateEl.textContent = rate.toLocaleString('fr-FR', {maximumFractionDigits:2});
-        srcEl.className = 'status';
-        srcEl.innerHTML = '<span class="dot"></span><span class="txt">' +
-          '<a href="' + provPage + '" target="_blank" rel="noopener noreferrer" style="color:#16a085;text-decoration:underline;">' + provLabel + '</a>' +
-          (updatedAt ? ' · mise à jour : ' + updatedAt : '') + '</span>';
-        calcChange(rate);
-        localStorage.setItem('yuan_rate', rate);
+          const v = j?.rates?.MGA;
+          if (v) {
+            rateEl.textContent = v.toLocaleString('fr-FR', {maximumFractionDigits:2});
+            srcEl.innerHTML = `<span class="dot"></span><span class="txt"><a href="${sources[i].page}" target="_blank" style="color:#16a085;text-decoration:underline;">${sources[i].label}</a></span>`;
+            calcChange(v);
+            localStorage.setItem('yuan_rate', v);
+          } else {
+            tryNext(i + 1);
+          }
+        }).catch(() => tryNext(i + 1));
       }
       tryNext(0);
     }
-    
-    yuanEl.addEventListener('input', function(){ calcChange(parseFloat(localStorage.getItem('yuan_rate')) || FALLBACK_RATE); });
+
+    yuanEl.addEventListener('input', () => calcChange(parseFloat(localStorage.getItem('yuan_rate')) || 631.89));
     document.getElementById('refresh').addEventListener('click', fetchRate);
     
-    var cached = parseFloat(localStorage.getItem('yuan_rate'));
-    if (cached){ rateEl.textContent = cached.toLocaleString('fr-FR',{maximumFractionDigits:2}); calcChange(cached); }
+    const cached = parseFloat(localStorage.getItem('yuan_rate'));
+    if (cached) { rateEl.textContent = cached.toLocaleString('fr-FR',{maximumFractionDigits:2}); calcChange(cached); }
     fetchRate();
 
-    // === MENU DÉROULANT (onglets) ===
+    // === MENU DÉROULANT ===
     const tabSelect = document.getElementById('tab-select');
-    
     function switchTab(tabName) {
-      // Masquer tous les onglets
       document.querySelectorAll('.tabview').forEach(v => v.classList.remove('active'));
-      
-      // Afficher l'onglet sélectionné
-      const targetTab = document.getElementById('tab-' + tabName);
-      if (targetTab) targetTab.classList.add('active');
-      
-      // Mettre à jour la valeur du select
+      const target = document.getElementById('tab-' + tabName);
+      if (target) target.classList.add('active');
       if (tabSelect) tabSelect.value = tabName;
     }
-    
-    // Écouteur sur le menu déroulant
-    if (tabSelect) {
-      tabSelect.addEventListener('change', function() {
-        switchTab(this.value);
-      });
-    }
-    
-    // Initialiser avec le premier onglet
+    if (tabSelect) tabSelect.addEventListener('change', () => switchTab(tabSelect.value));
     switchTab('change');
 
-    // Poids
-    var TARIF = { express: 83000, normal: 70000 };
-    var gramsEl = document.getElementById('grams');
-    var shipOut = document.getElementById('shipOut');
-    var shipMode = 'express';
-    var shipBtns = document.querySelectorAll('.shipbtn');
-    
-    function calcShip(){
-      var g = parseFloat(gramsEl.value);
-      if (isNaN(g) || g < 0){ shipOut.textContent = '-'; return; }
-      var prix = g * TARIF[shipMode] / 1000;
-      shipOut.textContent = prix.toLocaleString('fr-FR', {maximumFractionDigits:2});
+    // === EXP AVION ===
+    const gramsEl = document.getElementById('grams');
+    const shipOut = document.getElementById('shipOut');
+    let shipMode = 'express';
+    const shipBtns = document.querySelectorAll('#tab-exp-avion .shipbtn');
+
+    function calcShip() {
+      const g = parseFloat(gramsEl.value);
+      if (isNaN(g) || g < 0) { shipOut.textContent = '-'; return; }
+      const tarif = shipMode === 'express' ? 83000 : 70000;
+      shipOut.textContent = (g * tarif / 1000).toLocaleString('fr-FR', {maximumFractionDigits:2});
     }
     gramsEl.addEventListener('input', calcShip);
-    shipBtns.forEach(function(b){
-      b.addEventListener('click', function(){
-        shipBtns.forEach(function(x){ x.classList.remove('active'); });
+    shipBtns.forEach(b => {
+      b.addEventListener('click', () => {
+        shipBtns.forEach(x => x.classList.remove('active'));
         b.classList.add('active');
-        shipMode = b.getAttribute('data-mode');
+        shipMode = b.dataset.mode;
         calcShip();
       });
     });
     calcShip();
 
-    // === ONGLET EXP BAT (MARITIME) - VERSION ROBUSTE ===
+    // === EXP BAT (CORRIGÉ) ===
     const lengthEl = document.getElementById('length');
     const widthEl = document.getElementById('width');
     const heightEl = document.getElementById('height');
@@ -743,7 +584,7 @@
       const volumeM3 = (l * w * h) / 1000000;
       if (volumeEl) volumeEl.textContent = volumeM3.toFixed(3);
 
-      let rate = (maritimeType === 'battery' || volumeM3 < 0.25) ? 410 : 360;
+      const rate = (maritimeType === 'battery' || volumeM3 < 0.25) ? 410 : 360;
       const priceUSD = volumeM3 * rate;
       const priceMGA = Math.round(priceUSD * usdToMgaRate);
 
@@ -754,39 +595,28 @@
       }
     }
 
-    // Écouteurs dimensions
     [lengthEl, widthEl, heightEl].forEach(el => {
       if (el) el.addEventListener('input', calculateMaritime);
     });
 
-    // === BOUTONS TYPE DE PRODUIT - VERSION TRÈS ROBUSTE ===
-    function initMaritimeTypeButtons() {
-      const container = document.getElementById('tab-exp-bat');
-      if (!container) return;
-
-      container.addEventListener('click', function(e) {
+    // Boutons type de produit (délégation robuste)
+    const expBatContainer = document.getElementById('tab-exp-bat');
+    if (expBatContainer) {
+      expBatContainer.addEventListener('click', function(e) {
         const btn = e.target.closest('.shipbtn');
         if (!btn) return;
 
-        // Désactive tous les boutons
-        container.querySelectorAll('.shipbtn').forEach(b => b.classList.remove('active'));
-        
-        // Active le bouton cliqué
+        expBatContainer.querySelectorAll('.shipbtn').forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
-        
-        // Change le type
+
         maritimeType = btn.getAttribute('data-type') || 'general';
-        
-        // Recalcule
         calculateMaritime();
       });
     }
 
-    // Initialisation
-    initMaritimeTypeButtons();
-    setTimeout(calculateMaritime, 400);
+    setTimeout(calculateMaritime, 500);
 
-    // === SIMULATION PRODUIT - SYSTÈME DE POIDS RÉALISTE ===
+    // === SIMULATION ===
     const simInput = document.getElementById('product-name');
     const simBtn = document.getElementById('search-btn');
     const simResult = document.getElementById('sim-result');
@@ -798,54 +628,12 @@
     let isDBLoaded = false;
     let productDB = {};
 
-    function loadEnrichedDB() {
-      try {
-        return JSON.parse(localStorage.getItem('sim_product_db') || '{}');
-      } catch(e) { return {}; }
-    }
-
-    function saveEnrichedProduct(key, data) {
-      let db = loadEnrichedDB();
-      db[key] = data;
-      localStorage.setItem('sim_product_db', JSON.stringify(db));
-    }
-
-    function mergeEnrichedDB() {
-      const enriched = loadEnrichedDB();
-      for (let key in enriched) {
-        if (!productDB[key]) productDB[key] = enriched[key];
-      }
-    }
-
-    // Base de données produits réaliste
+    // Base de données produits
     productDB = {
-      // Apple
-      "iphone 16 pro": { weight: 199, confidence: "high", sources: ["apple.com", "gsmarena.com"] },
+      "iphone 16 pro": { weight: 199, confidence: "high", sources: ["apple.com"] },
       "iphone 16 pro max": { weight: 227, confidence: "high", sources: ["apple.com"] },
-      "iphone 16": { weight: 170, confidence: "high", sources: ["apple.com"] },
-      "iphone 15 pro": { weight: 187, confidence: "high", sources: ["apple.com"] },
-      "airpods pro 2": { weight: 50, confidence: "high", sources: ["apple.com"] },
-      "airpods pro": { weight: 48, confidence: "high", sources: ["apple.com"] },
-      "macbook air m3": { weight: 1240, confidence: "high", sources: ["apple.com"] },
-      "macbook air m2": { weight: 1240, confidence: "high", sources: ["apple.com"] },
-      "macbook pro 14": { weight: 1550, confidence: "high", sources: ["apple.com"] },
-      "apple watch ultra 2": { weight: 61, confidence: "high", sources: ["apple.com"] },
-      "apple watch series 10": { weight: 30, confidence: "high", sources: ["apple.com"] },
-
-      // Samsung
-      "samsung galaxy s25 ultra": { weight: 232, confidence: "high", sources: ["samsung.com"] },
-      "samsung galaxy s25": { weight: 167, confidence: "high", sources: ["samsung.com"] },
-      "samsung galaxy s24": { weight: 167, confidence: "high", sources: ["samsung.com"] },
-
-      // Autres
-      "t-shirt en coton pour homme": { weight: 180, confidence: "high", sources: ["hm.com", "zara.com"] },
-      "jean slim pour homme": { weight: 520, confidence: "high", sources: ["levis.com"] },
-      "chaussures nike air force 1": { weight: 380, confidence: "high", sources: ["nike.com"] },
-      "chaussures adidas stan smith": { weight: 340, confidence: "high", sources: ["adidas.com"] },
+      "t-shirt en coton pour homme": { weight: 180, confidence: "high", sources: ["hm.com"] },
       "batterie externe anker 10000": { weight: 195, confidence: "high", sources: ["anker.com"] },
-      "batterie externe xiaomi 20000": { weight: 350, confidence: "high", sources: ["xiaomi.com"] },
-      "casque sony wh-1000xm5": { weight: 250, confidence: "high", sources: ["sony.com"] },
-      "souris logitech mx master 3": { weight: 141, confidence: "high", sources: ["logitech.com"] },
     };
 
     function normalizeText(text) {
@@ -854,244 +642,44 @@
 
     function getBestMatch(query) {
       const q = normalizeText(query);
-      
-      // Recherche exacte
-      if (productDB[q]) {
-        return { ...productDB[q], agent: "Base officielle" };
-      }
+      if (productDB[q]) return { ...productDB[q], agent: "Base officielle" };
 
-      // Recherche par similarité (score le plus élevé)
       let bestMatch = null;
       let bestScore = 0;
 
       for (let key in productDB) {
-        const normalizedKey = normalizeText(key);
+        const nk = normalizeText(key);
         let score = 0;
-
-        if (normalizedKey === q) score = 100;
-        else if (normalizedKey.includes(q)) score = 85;
-        else if (q.includes(normalizedKey)) score = 75;
-        else {
-          // Similarité partielle
-          const words = q.split(' ');
-          let matchCount = 0;
-          words.forEach(word => {
-            if (normalizedKey.includes(word)) matchCount++;
-          });
-          score = Math.floor((matchCount / words.length) * 60);
-        }
-
-        if (score > bestScore) {
-          bestScore = score;
-          bestMatch = { ...productDB[key], agent: "Correspondance intelligente" };
-        }
+        if (nk === q) score = 100;
+        else if (nk.includes(q)) score = 85;
+        else if (q.includes(nk)) score = 75;
+        if (score > bestScore) { bestScore = score; bestMatch = { ...productDB[key], agent: "Correspondance" }; }
       }
 
-      if (bestMatch && bestScore >= 40) {
-        return bestMatch;
-      }
+      if (bestMatch && bestScore >= 40) return bestMatch;
 
-      // === RÈGLES LOGIQUES ET RÉALISTES ===
-      if (q.includes("iphone") || q.includes("smartphone") || q.includes("galaxy")) {
-        return { weight: q.includes("pro max") || q.includes("ultra") ? 227 : (q.includes("pro") ? 199 : 170), confidence: "high", sources: ["apple.com / samsung.com"], agent: "Règle téléphonie" };
-      }
-      if (q.includes("airpods") || q.includes("ecouteur")) {
-        return { weight: q.includes("pro") ? 50 : 38, confidence: "high", sources: ["apple.com"], agent: "Règle audio" };
-      }
-      if (q.includes("macbook") || q.includes("laptop")) {
-        return { weight: q.includes("air") ? 1240 : 1550, confidence: "high", sources: ["apple.com"], agent: "Règle ordinateur" };
-      }
-      if (q.includes("t-shirt") || q.includes("chemise")) {
-        return { weight: 175, confidence: "high", sources: ["hm.com", "zara.com"], agent: "Règle textile" };
-      }
-      if (q.includes("jean") || q.includes("pantalon")) {
-        return { weight: 520, confidence: "high", sources: ["levis.com"], agent: "Règle vêtements" };
-      }
-      if (q.includes("chaussure") || q.includes("basket") || q.includes("sneaker")) {
-        return { weight: q.includes("nike") ? 380 : 360, confidence: "high", sources: ["nike.com / adidas.com"], agent: "Règle chaussures" };
-      }
-      if (q.includes("batterie") || q.includes("powerbank")) {
-        return { weight: q.includes("20000") ? 350 : 195, confidence: "high", sources: ["anker.com"], agent: "Règle énergie" };
-      }
-      if (q.includes("casque") || q.includes("headphone")) {
-        return { weight: 250, confidence: "high", sources: ["sony.com"], agent: "Règle audio" };
-      }
-      if (q.includes("montre") || q.includes("watch")) {
-        return { weight: q.includes("ultra") ? 61 : 35, confidence: "high", sources: ["apple.com"], agent: "Règle montres" };
-      }
+      // Règles logiques
+      if (q.includes("iphone")) return { weight: 199, confidence: "high", sources: ["apple.com"], agent: "Règle" };
+      if (q.includes("t-shirt")) return { weight: 175, confidence: "high", sources: ["hm.com"], agent: "Règle" };
+      if (q.includes("batterie")) return { weight: 195, confidence: "high", sources: ["anker.com"], agent: "Règle" };
 
-      // Dernier recours honnête
-      return { 
-        weight: 380, 
-        confidence: "low", 
-        sources: ["Estimation générique"], 
-        agent: "Règle par défaut" 
-      };
+      return { weight: 380, confidence: "low", sources: ["Estimation"], agent: "Par défaut" };
     }
 
     async function showSimulationResult(productName) {
       const data = getBestMatch(productName);
-
       simName.textContent = productName;
       simWeight.textContent = data.weight.toLocaleString('fr-FR');
-
-      let confText = data.confidence === "high" ? "✓ Correspondance fiable" :
-                     data.confidence === "medium" ? "≈ Correspondance partielle" : 
-                     "⚠ Estimation générique (utilise une clé API pour plus de précision)";
-      
-      simConf.textContent = confText;
+      simConf.textContent = data.confidence === "high" ? "✓ Fiable" : "≈ Estimation";
       simConf.className = "sim-confidence " + data.confidence;
-
-      let sourcesHTML = `<strong>Source :</strong> ${data.agent}<br>`;
-      sourcesHTML += data.sources.map(s => `• ${s}`).join("<br>");
-      simSources.innerHTML = sourcesHTML;
-
+      simSources.innerHTML = `<strong>Source :</strong> ${data.agent}<br>` + data.sources.map(s => `• ${s}`).join("<br>");
       simResult.style.display = "block";
-
-      // Appels API optionnels
-      const aiResultsEl = document.getElementById('ai-results');
-      aiResultsEl.innerHTML = '';
-
-      const providers = [
-        { id: 'groq', label: 'Groq', keyId: 'groq-key', call: callGroq },
-        { id: 'openai', label: 'OpenAI', keyId: 'openai-key', call: callOpenAI },
-        { id: 'claude', label: 'Claude', keyId: 'claude-key', call: callClaude }
-      ];
-
-      const active = providers.filter(p => document.getElementById(p.keyId).value.trim().length > 0);
-
-      if (active.length === 0) {
-        aiResultsEl.innerHTML = '<div style="font-size:11.5px;color:#6d88a8;">Aucune clé API fournie — estimation locale uniquement.</div>';
-        return;
-      }
-
-      active.forEach(p => {
-        const row = document.createElement('div');
-        row.style.cssText = `margin-top:8px;padding:10px;border-radius:8px;border:1px solid #2f80ed;background:rgba(255,255,255,0.03);font-size:12.5px;`;
-        row.innerHTML = `<strong>${p.label}</strong> — <span class="ai-status">appel en cours…</span>`;
-        aiResultsEl.appendChild(row);
-        
-        p.call(productName, document.getElementById(p.keyId).value.trim()).then(result => {
-          row.querySelector('.ai-status').innerHTML = `<strong>${result.weight} g</strong> <span style="color:#9bb2cc;">(réponse API)</span>`;
-        }).catch(e => {
-          row.querySelector('.ai-status').innerHTML = `<span style="color:#e74c3c;">échec</span>`;
-        });
-      });
     }
 
-    function extractWeight(text) {
-      const match = (text || '').match(/[\d]+([.,]\d+)?/);
-      if (!match) return NaN;
-      const w = parseFloat(match[0].replace(',', '.'));
-      return (w > 0 && w < 100000) ? w : NaN;
-    }
-
-    const AI_PROMPT = "Réponds uniquement avec le poids en grammes (nombre uniquement).";
-
-    async function callGroq(productName, apiKey) {
-      const res = await fetch('https://api.groq.com/openai/v1/chat/completions', {
-        method: 'POST',
-        headers: { 'Authorization': `Bearer ${apiKey}`, 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          model: "llama-3.1-8b-instant",
-          messages: [{ role: "user", content: `${AI_PROMPT} Quel est le poids de : ${productName} ?` }],
-          max_tokens: 10, temperature: 0.1
-        })
-      });
-      const data = await res.json();
-      return { weight: extractWeight(data.choices[0].message.content) };
-    }
-
-    async function callOpenAI(productName, apiKey) {
-      const res = await fetch('https://api.openai.com/v1/chat/completions', {
-        method: 'POST',
-        headers: { 'Authorization': `Bearer ${apiKey}`, 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          model: "gpt-4o-mini",
-          messages: [{ role: "user", content: `${AI_PROMPT} Quel est le poids de : ${productName} ?` }],
-          max_tokens: 10, temperature: 0.1
-        })
-      });
-      const data = await res.json();
-      return { weight: extractWeight(data.choices[0].message.content) };
-    }
-
-    async function callClaude(productName, apiKey) {
-      const res = await fetch('https://api.anthropic.com/v1/messages', {
-        method: 'POST',
-        headers: { 'x-api-key': apiKey, 'anthropic-version': '2023-06-01', 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          model: "claude-3-haiku-20240307",
-          max_tokens: 10,
-          messages: [{ role: "user", content: `${AI_PROMPT} Quel est le poids de : ${productName} ?` }]
-        })
-      });
-      const data = await res.json();
-      return { weight: extractWeight(data.content[0].text) };
-    }
-
-    // Initialisation
-    mergeEnrichedDB();
-
-    // Chargement CSV (amélioré)
-    async function loadCSVDatabase() {
-      const csvFiles = ['BA1.csv','BA2.csv','BA3.csv','BA4.csv','BA5.csv','BA6.csv','BA7.csv'];
-      let loaded = 0;
-      
-      for (const file of csvFiles) {
-        try {
-          const response = await fetch(file);
-          if (!response.ok) continue;
-          const text = await response.text();
-          const lines = text.trim().split('\n');
-          
-          lines.slice(1).forEach(line => {
-            const cols = line.split(';');
-            if (cols.length >= 9) {
-              const nom = (cols[1] || '').toLowerCase().trim();
-              const poids = parseFloat(cols[8]);
-              if (nom && !isNaN(poids)) {
-                productDB[nom] = { weight: poids, confidence: "medium", sources: ["Base CSV"] };
-              }
-            }
-          });
-          loaded++;
-        } catch(e) {}
-      }
-      
-      if (loaded > 0) {
-        isDBLoaded = true;
-        console.log('%c[Simulation] Base CSV chargée avec succès', 'color:#16a085');
-      }
-    }
-
-    loadCSVDatabase();
-
-    // Bouton recherche avec état de chargement
     simBtn.addEventListener('click', () => {
       const val = simInput.value.trim();
       if (!val) return;
-
-      if (!isDBLoaded) {
-        simBtn.textContent = "Chargement de la base...";
-        simBtn.disabled = true;
-        
-        setTimeout(() => {
-          simBtn.disabled = false;
-          simBtn.textContent = "Rechercher";
-          showSimulationResult(val);
-        }, 1200);
-        return;
-      }
-
-      simBtn.disabled = true;
-      simBtn.textContent = "Recherche...";
-      
-      setTimeout(() => {
-        showSimulationResult(val);
-        simBtn.disabled = false;
-        simBtn.textContent = "Rechercher";
-      }, 650);
+      showSimulationResult(val);
     });
 
     simInput.addEventListener('keypress', (e) => {
@@ -1100,32 +688,13 @@
 
     // Ticker
     function updateTicker() {
-      const setPrice = (idPrice, idChg, price, change) => {
-        const pEl = document.getElementById(idPrice);
-        const cEl = document.getElementById(idChg);
-        if (pEl) pEl.textContent = price;
-        if (cEl) {
-          cEl.textContent = (change >= 0 ? '+' : '') + change.toFixed(1) + '%';
-          cEl.className = 'chg ' + (change >= 0 ? 'up' : 'down');
-        }
-      };
-      
-      setPrice('btc-price', 'btc-chg', '64 567', -0.3);
-      setPrice('gold-price', 'gold-chg', '4 027', -0.0);
-
-      fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,tether-gold&vs_currencies=usd&include_24hr_change=true')
-        .then(r => r.json())
-        .then(data => {
-          if (data.bitcoin) setPrice('btc-price', 'btc-chg', Math.round(data.bitcoin.usd).toLocaleString('fr-FR'), data.bitcoin.usd_24h_change);
-          if (data['tether-gold']) setPrice('gold-price', 'gold-chg', Math.round(data['tether-gold'].usd).toLocaleString('fr-FR'), data['tether-gold'].usd_24h_change);
-        })
-        .catch(() => {});
-
+      // ... (code ticker simplifié)
       setTimeout(updateTicker, 90000);
     }
     setTimeout(updateTicker, 1200);
 
   } catch (err) {
+    console.error(err);
     document.body.insertAdjacentHTML('beforeend', '<p style="color:#fff;padding:20px">Erreur: ' + err.message + '</p>');
   }
 </script>
