@@ -409,8 +409,35 @@
       <div class="field">
         <label>Type de produit</label>
         <div class="shipchoice">
-          <button type="button" class="shipbtn active" onclick="maritimeType='general'; calculateMaritime(); this.parentElement.querySelectorAll('.shipbtn').forEach(b=>b.classList.remove('active')); this.classList.add('active')">Produit général<span>360 $ / m³</span></button>
-          <button type="button" class="shipbtn" onclick="maritimeType='battery'; calculateMaritime(); this.parentElement.querySelectorAll('.shipbtn').forEach(b=>b.classList.remove('active')); this.classList.add('active')">Batterie ou &lt; 0.25m³<span>410 $ / m³</span></button>
+          <button type="button" class="shipbtn active" onclick="
+            this.parentElement.querySelectorAll('.shipbtn').forEach(b => b.classList.remove('active'));
+            this.classList.add('active');
+            const l = parseFloat(document.getElementById('length').value)||0;
+            const w = parseFloat(document.getElementById('width').value)||0;
+            const h = parseFloat(document.getElementById('height').value)||0;
+            const vol = (l*w*h)/1000000;
+            document.getElementById('volume-m3').innerText = vol.toFixed(3);
+            const rate = 360;
+            const usd = vol * rate;
+            document.getElementById('maritime-price-usd').innerText = usd.toFixed(2);
+            document.getElementById('maritime-price-mga').innerText = Math.round(usd * 4500).toLocaleString('fr-FR');
+            document.getElementById('maritime-formula').innerText = rate + ' $ × ' + vol.toFixed(3) + ' m³';
+          ">Produit général<span>360 $ / m³</span></button>
+          
+          <button type="button" class="shipbtn" onclick="
+            this.parentElement.querySelectorAll('.shipbtn').forEach(b => b.classList.remove('active'));
+            this.classList.add('active');
+            const l = parseFloat(document.getElementById('length').value)||0;
+            const w = parseFloat(document.getElementById('width').value)||0;
+            const h = parseFloat(document.getElementById('height').value)||0;
+            const vol = (l*w*h)/1000000;
+            document.getElementById('volume-m3').innerText = vol.toFixed(3);
+            const rate = 410;
+            const usd = vol * rate;
+            document.getElementById('maritime-price-usd').innerText = usd.toFixed(2);
+            document.getElementById('maritime-price-mga').innerText = Math.round(usd * 4500).toLocaleString('fr-FR');
+            document.getElementById('maritime-formula').innerText = rate + ' $ × ' + vol.toFixed(3) + ' m³';
+          ">Batterie ou &lt; 0.25m³<span>410 $ / m³</span></button>
         </div>
       </div>
 
