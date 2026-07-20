@@ -599,22 +599,22 @@
       if (el) el.addEventListener('input', calculateMaritime);
     });
 
-    // Boutons type de produit (délégation robuste)
-    const expBatContainer = document.getElementById('tab-exp-bat');
-    if (expBatContainer) {
-      expBatContainer.addEventListener('click', function(e) {
-        const btn = e.target.closest('.shipbtn');
-        if (!btn) return;
-
-        expBatContainer.querySelectorAll('.shipbtn').forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-
-        maritimeType = btn.getAttribute('data-type') || 'general';
-        calculateMaritime();
+    // === BOUTONS EXP BAT - CORRECTION DIRECTE ===
+    setTimeout(() => {
+      const buttons = document.querySelectorAll('#tab-exp-bat .shipbtn');
+      
+      buttons.forEach(btn => {
+        btn.addEventListener('click', function() {
+          buttons.forEach(b => b.classList.remove('active'));
+          this.classList.add('active');
+          maritimeType = this.dataset.type || 'general';
+          calculateMaritime();
+        });
       });
-    }
-
-    setTimeout(calculateMaritime, 500);
+      
+      // Calcul initial
+      calculateMaritime();
+    }, 700);
 
     // === SIMULATION ===
     const simInput = document.getElementById('product-name');
