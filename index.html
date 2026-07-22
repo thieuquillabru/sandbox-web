@@ -334,43 +334,16 @@
         <div class="result">
           <span class="big" id="volume-m3">0.060</span><span class="unit">m³</span>
         </div>
+        <div id="volume-warning" style="display:none; margin-top:8px; padding:8px 12px; background:#fff3cd; border:1px solid #ffc107; border-radius:8px; font-size:12px; color:#856404;">
+          ⚠️ Volume inférieur à 0.25 m³ → Tarif majoré (410 $ / m³) appliqué
+        </div>
       </div>
 
       <div class="field">
         <label>Type de produit</label>
         <div class="shipchoice" id="maritime-type-buttons">
-          <button type="button" class="shipbtn active" onclick="
-            document.querySelectorAll('#maritime-type-buttons .shipbtn').forEach(b => b.classList.remove('active'));
-            this.classList.add('active');
-            window.maritimeType = 'general';
-            // Recalcul direct
-            const l = parseFloat(document.getElementById('length').value) || 0;
-            const w = parseFloat(document.getElementById('width').value) || 0;
-            const h = parseFloat(document.getElementById('height').value) || 0;
-            const vol = (l*w*h)/1000000;
-            document.getElementById('volume-m3').innerText = vol.toFixed(3);
-            const rate = 360;
-            const usd = vol * rate;
-            document.getElementById('maritime-price-usd').innerText = usd.toFixed(2);
-            document.getElementById('maritime-price-mga').innerText = Math.round(usd * 4500).toLocaleString('fr-FR');
-            document.getElementById('maritime-formula').innerText = rate + ' $ × ' + vol.toFixed(3) + ' m³';
-          ">Général<span>360 $ / m³</span></button>
-          
-          <button type="button" class="shipbtn" onclick="
-            document.querySelectorAll('#maritime-type-buttons .shipbtn').forEach(b => b.classList.remove('active'));
-            this.classList.add('active');
-            window.maritimeType = 'battery';
-            const l = parseFloat(document.getElementById('length').value) || 0;
-            const w = parseFloat(document.getElementById('width').value) || 0;
-            const h = parseFloat(document.getElementById('height').value) || 0;
-            const vol = (l*w*h)/1000000;
-            document.getElementById('volume-m3').innerText = vol.toFixed(3);
-            const rate = 410;
-            const usd = vol * rate;
-            document.getElementById('maritime-price-usd').innerText = usd.toFixed(2);
-            document.getElementById('maritime-price-mga').innerText = Math.round(usd * 4500).toLocaleString('fr-FR');
-            document.getElementById('maritime-formula').innerText = rate + ' $ × ' + vol.toFixed(3) + ' m³';
-          ">Batterie ou &lt; 0.25m³<span>410 $ / m³</span></button>
+          <button type="button" class="shipbtn active" data-type="general">Général<span>360 $ / m³</span></button>
+          <button type="button" class="shipbtn" data-type="battery">Batterie ou &lt; 0.25m³<span>410 $ / m³</span></button>
         </div>
       </div>
 
@@ -452,8 +425,7 @@
     simInput: document.getElementById('product-name'),
     simBtn: document.getElementById('search-btn'),
     simResult: document.getElementById('sim-result'),
-    tabSelect: document.getElementById('tab-select'),
-    maritimeButtons: document.getElementById('maritime-type-buttons')
+    tabSelect: document.getElementById('tab-select')
   };
 
   // === STATE ===
@@ -479,14 +451,10 @@
   function calcChange(rate) {
     if (!el.yuan || !el.out) return;
     const y = safeParseFloat(el.yuan.value);
-<<<<<<< HEAD
-    if (y < 0) { el.out.textContent = '-'; return; }
-=======
     if (y < 0 || isNaN(y) || !isFinite(y)) {
       el.out.textContent = '-';
       return;
     }
->>>>>>> 715dc63 (Final audit: Improved input validation, error handling, and code structure)
     el.out.textContent = (y * FEE * rate).toLocaleString('fr-FR', {maximumFractionDigits:2});
   }
 
@@ -583,32 +551,30 @@
   function calculateMaritime() {
     if (!el.length || !el.width || !el.height || !el.volume || 
         !el.maritimeUsd || !el.maritimeMga || !el.maritimeFormula) return;
-<<<<<<< HEAD
-
-    const l = Math.max(0, safeParseFloat(el.length.value));
-    const w = Math.max(0, safeParseFloat(el.width.value));
-    const h = Math.max(0, safeParseFloat(el.height.value));
-=======
 
     const l = safeParseFloat(el.length.value);
     const w = safeParseFloat(el.width.value);
     const h = safeParseFloat(el.height.value);
 
-    // Protection contre les valeurs non numériques ou négatives
     if (isNaN(l) || isNaN(w) || isNaN(h) || l < 0 || w < 0 || h < 0) {
       el.volume.textContent = '0.000';
+      document.getElementById('volume-warning').style.display = 'none';
       return;
     }
 
->>>>>>> 715dc63 (Final audit: Improved input validation, error handling, and code structure)
     const volumeM3 = (l * w * h) / 1000000;
     el.volume.textContent = volumeM3.toFixed(3);
 
-<<<<<<< HEAD
-    el.volume.textContent = volumeM3.toFixed(3);
+    // Affichage de la notification si volume < 0.25 m³
+    const warningEl = document.getElementById('volume-warning');
+    if (warningEl) {
+      if (volumeM3 < 0.25) {
+        warningEl.style.display = 'block';
+      } else {
+        warningEl.style.display = 'none';
+      }
+    }
 
-=======
->>>>>>> 715dc63 (Final audit: Improved input validation, error handling, and code structure)
     const isBatteryOrSmall = maritimeType === 'battery' || volumeM3 < TARIFF.SEA.volumeThreshold;
     const rate = isBatteryOrSmall ? TARIFF.SEA.battery : TARIFF.SEA.general;
     const priceUSD = volumeM3 * rate;
@@ -627,23 +593,14 @@
     });
   }
 
-<<<<<<< HEAD
   // Maritime type buttons
   function initMaritimeButtons() {
-    const container = el.maritimeButtons;
-=======
-  // Maritime type buttons - Very robust direct listeners
-  function initMaritimeButtons() {
     const container = document.getElementById('maritime-type-buttons');
->>>>>>> 715dc63 (Final audit: Improved input validation, error handling, and code structure)
     if (!container) return;
 
     const buttons = container.querySelectorAll('.shipbtn');
     
     buttons.forEach(btn => {
-      // Remove any existing listeners first
-      btn.onclick = null;
-      
       btn.addEventListener('click', function() {
         buttons.forEach(b => b.classList.remove('active'));
         this.classList.add('active');
@@ -667,32 +624,17 @@
     "batterie anker 10000": { weight: 195, sources: ["anker.com"] },
   };
 
-  /**
-   * Recherche le poids le plus probable d'un produit.
-   * @param {string} query - Nom du produit saisi par l'utilisateur
-   * @returns {{weight: number, sources: string[], agent: string}}
-   */
   function getBestMatch(query) {
-<<<<<<< HEAD
-    if (!query || typeof query !== 'string') {
-=======
-    // Validation stricte de l'entrée
     if (!query || typeof query !== 'string' || query.trim() === '') {
->>>>>>> 715dc63 (Final audit: Improved input validation, error handling, and code structure)
       return { weight: 0, sources: ["Entrée invalide"], agent: "Erreur" };
     }
 
     const q = query.toLowerCase().trim();
-    if (!q) {
-      return { weight: 0, sources: ["Entrée vide"], agent: "Erreur" };
-    }
 
-    // Recherche exacte
     if (productDB[q]) {
       return { ...productDB[q], agent: "Base officielle" };
     }
 
-    // Règles par catégorie
     if (q.includes("iphone")) {
       return { weight: 199, sources: ["apple.com"], agent: "Règle iPhone" };
     }
@@ -703,7 +645,6 @@
       return { weight: 195, sources: ["anker.com"], agent: "Règle batterie" };
     }
 
-    // Estimation par défaut
     return { weight: 380, sources: ["Estimation générique"], agent: "Règle par défaut" };
   }
 
