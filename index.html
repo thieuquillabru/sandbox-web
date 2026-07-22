@@ -5,8 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
 <meta name="apple-mobile-web-app-capable" content="yes" />
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-<meta name="theme-color" content="#0b1f3a" />
-<title>ExchangeMGA</title>
+<meta name="theme-color" content="#0A1629" />
+<title>ExchangeMGA • Professionnel</title>
 <meta name="apple-mobile-web-app-title" content="ExchangeMGA" />
 
 <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
@@ -15,319 +15,444 @@
 <link rel="manifest" href="manifest.json">
 
 <style>
-  :root{
-    --bg:#0b1f3a; --bg2:#0e2747; --ink:#0a1426;
-    --txt:#eaf2fb; --muted:#9bb2cc; --accent:#2f80ed; --accent2:#16a085;
-    --ariary:#e0a800; --line:rgba(255,255,255,.08); --panel:rgba(255,255,255,.04);
+  :root {
+    --navy: #0A1629;
+    --navy-light: #1E3A5F;
+    --gold: #C5A26F;
+    --gold-dark: #A67C52;
+    --teal: #0D9488;
+    --white: #FFFFFF;
+    --gray-50: #F8FAFC;
+    --gray-100: #F1F5F9;
+    --gray-200: #E2E8F0;
+    --gray-600: #475569;
+    --gray-700: #334155;
+    --gray-800: #1E293B;
+    --shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+    --shadow-lg: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
   }
-  *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
-  html,body{height:auto; min-height:100%;}
-  body{
-    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
-    background:linear-gradient(180deg,#a8d0ff 0%,#d4e9ff 45%,#f0f8ff 100%);
-    color:#1a2a4a; overflow-y:auto; position:relative;
-    padding-top:env(safe-area-inset-top);padding-bottom:env(safe-area-inset-bottom);
+
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  html, body {
+    height: auto;
+    min-height: 100%;
+  }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background: linear-gradient(180deg, #F8FAFC 0%, #F1F5F9 100%);
+    color: var(--gray-800);
+    overflow-y: auto;
+    position: relative;
+    padding-top: env(safe-area-inset-top);
+    padding-bottom: env(safe-area-inset-bottom);
     -webkit-overflow-scrolling: touch;
+    line-height: 1.5;
   }
-  .bg{position:fixed;inset:0;z-index:0;overflow:hidden;}
-  .bg .grid{position:absolute;inset:0;
-    background-image:linear-gradient(rgba(255,255,255,.04) 1px,transparent 1px),
-                     linear-gradient(90deg,rgba(255,255,255,.04) 1px,transparent 1px);
-    background-size:46px 46px;
-    -webkit-mask-image:linear-gradient(to bottom,#000,transparent 70%);
-    mask-image:linear-gradient(to bottom,#000,transparent 70%);}
 
-  .band{position:absolute;left:0;right:0;height:120px;opacity:.5;}
-  .band.top{top:0;background:linear-gradient(180deg,rgba(47,128,237,.12),transparent);}
-
-  .sun {
-    position: absolute; top: 12%; right: 18%; width: 72px; height: 72px;
-    background: radial-gradient(circle at 35% 35%, #ffffff 8%, #fffbeb 22%, #ffeb3b 45%, #ffc107 72%, #ff9800 100%);
-    border-radius: 50%;
-    box-shadow: 
-      0 0 18px 9px rgba(255,240,150,.9),
-      0 0 38px 19px rgba(255,210,80,.65),
-      0 0 65px 32px rgba(255,180,50,.4),
-      0 0 95px 48px rgba(255,150,30,.2);
-    z-index: 1; opacity: 1;
-    animation: sunPulse 3.8s ease-in-out infinite;
+  /* Background subtil */
+  .bg {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    overflow: hidden;
+    background: linear-gradient(180deg, #F0F7FF 0%, #E0E7FF 100%);
   }
-  .sun::after {
-    content: "";
+
+  .bg .grid {
     position: absolute;
-    inset: -32px;
+    inset: 0;
+    background-image: 
+      linear-gradient(rgba(15, 23, 42, 0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(15, 23, 42, 0.03) 1px, transparent 1px);
+    background-size: 48px 48px;
+  }
+
+  .wrap {
+    position: relative;
+    z-index: 2;
+    max-width: 580px;
+    margin: 0 auto;
+    padding: 24px 20px 100px 20px;
+    min-height: 100vh;
+  }
+
+  /* Header */
+  .topnav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 28px;
+    padding: 0 4px;
+  }
+
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 700;
+    font-size: 21px;
+    color: var(--navy);
+    letter-spacing: -0.5px;
+  }
+
+  .brand-dot {
+    width: 9px;
+    height: 9px;
+    background: var(--gold);
     border-radius: 50%;
-    background: radial-gradient(circle, rgba(255,230,140,.55) 0%, rgba(255,230,140,0) 68%);
-    animation: sunPulse 3.8s ease-in-out infinite;
-  }
-  @keyframes sunPulse {
-    0%,100% { transform: scale(1); opacity: .9; }
-    50% { transform: scale(1.18); opacity: 1; }
+    box-shadow: 0 0 0 3px rgba(197, 162, 111, 0.2);
   }
 
-  .cloud{position:absolute;opacity:0.85;animation:drift linear infinite;}
-  .cloud.c1{width:220px;top:8%;animation-duration:95s;}
-  .cloud.c2{width:150px;top:16%;opacity:0.75;animation-duration:130s;animation-delay:-40s;}
-  .cloud.c3{width:180px;top:5%;opacity:0.8;animation-duration:110s;animation-delay:-80s;}
-  @keyframes drift{from{left:-25%}to{left:125%}}
-
-  @keyframes fly { from { left: -18%; top: 14%; } to { left: 115%; top: 7%; } }
-  @keyframes sail { from { left: -22%; } to { left: 115%; } }
-
-  .plane{position:absolute;width:140px;opacity:.92;animation:fly 38s linear infinite;filter:drop-shadow(0 8px 14px rgba(0,0,0,.35));}
-  .plane.p2{animation-duration:52s;width:95px;opacity:.65;top:22%;}
-
-  .ship{position:absolute;bottom:8%;width:165px;opacity:.95;filter:drop-shadow(0 6px 14px rgba(0,0,0,.45));animation:sail 36s linear infinite;}
-  .ship.s2{animation-duration:48s;width:115px;bottom:14%;opacity:.6;filter:drop-shadow(0 4px 10px rgba(0,0,0,.35));}
-
-  .sea{position:absolute;left:0;right:0;bottom:0;height:92px;overflow:hidden;}
-  .wave{position:absolute;bottom:0;left:0;width:300%;height:100%;}
-  .wave-back{fill:rgba(100,160,230,.45);animation:waveMove 18s linear infinite;}
-  .wave-mid{fill:rgba(70,180,200,.55);bottom:-4px;animation:waveMove 13s linear infinite reverse;}
-  .wave-front{fill:rgba(60,140,220,.65);bottom:-10px;animation:waveMove 9s linear infinite;}
-  @keyframes waveMove{from{transform:translateX(0)}to{transform:translateX(-33%)}}
-
-  .wrap{position:relative;z-index:2;max-width:560px;margin:0 auto;
-    display:flex;flex-direction:column;gap:16px;
-    padding: calc(38px + env(safe-area-inset-top) + 22px) 18px 80px 18px;
-    min-height:100vh; overflow-y:auto; -webkit-overflow-scrolling:touch; scroll-behavior:smooth;}
-
-  .topnav{display:flex;align-items:center;justify-content:flex-end;gap:12px;}
-  .flagmg{width:30px;height:20px;border-radius:4px;flex-shrink:0; box-shadow:0 1px 4px rgba(0,0,0,.35);}
-  .tab-select{
-    background:var(--panel); border:1px solid var(--line); color:var(--txt);
-    padding:10px 16px; border-radius:10px; font-size:14px; font-weight:600;
-    cursor:pointer; min-width:170px; outline:none; appearance:none;
+  .tab-select {
+    background: var(--white);
+    border: 1px solid var(--gray-200);
+    color: var(--gray-800);
+    padding: 10px 18px;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    min-width: 180px;
+    box-shadow: var(--shadow);
+    outline: none;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%23475569' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 14px center;
+    background-size: 14px;
+    padding-right: 38px;
   }
-  .tab-select:focus{border-color:var(--accent);}
-  .tab-select option{background:#f0f8ff;color:#1a2a4a;}
 
-  .head{text-align:center;}
-  .head .eyebrow{font-size:11px;letter-spacing:3px;color:#4a6fa5;text-transform:uppercase;}
-  .head h1{font-size:23px;font-weight:700;letter-spacing:.3px;color:#1a2a4a;margin-top:4px;}
-  .head .sub{font-size:12.5px;color:#5a7ab5;margin-top:4px;}
-
-  .card{background:rgba(255,255,255,0.85);border:1px solid #c5d8f0;border-radius:14px;padding:20px;
-    box-shadow:0 4px 20px rgba(0,0,0,.08);}
-  .field{margin-bottom:16px;}
-  .field label{display:block;font-size:11px;letter-spacing:1px;color:#4a6fa5;margin-bottom:7px;text-transform:uppercase;}
-  input[type=number]{width:100%;background:var(--ink);border:1px solid var(--line);
-    color:#fff;font-size:26px;font-weight:600;padding:14px 16px;border-radius:10px;outline:none;}
-  input:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(47,128,237,.25);}
-
-  .route{display:flex;align-items:center;justify-content:center;gap:12px;margin:6px 0;}
-  .route .end{display:flex;flex-direction:column;align-items:center;font-size:12px;color:var(--muted);}
-  .route .end b{color:var(--txt);font-size:14px;}
-  .route .arrow{color:var(--accent);font-size:22px;}
-
-  .result{margin-top:18px;background:var(--ink);border:1px solid var(--line);border-radius:12px;padding:16px;text-align:center;}
-  .result .big{font-size:38px;font-weight:700;color:#e0a800;letter-spacing:.5px;}
-  .result .unit{font-size:14px;color:#4a6fa5;margin-left:6px;}
-  .result .formula{font-size:11.5px;color:#4a6fa5;margin-top:8px;}
-
-  .rate{display:flex;justify-content:space-between;align-items:center;gap:12px;
-    border-top:1px solid var(--line);margin-top:16px;padding-top:14px;font-size:13px;color:var(--muted);}
-  .rate .v{color:var(--txt);font-weight:600;}
-  .rate .v b{color:var(--accent2);}
-  .status{font-size:11.5px;display:inline-flex;align-items:center;gap:5px;}
-  .status .dot{width:8px;height:8px;border-radius:50%;background:#16a085;}
-  .status.bad .dot{background:#e74c3c;}
-  button.refresh{background:var(--accent);border:none;color:#fff;font-weight:600;
-    padding:9px 16px;border-radius:9px;font-size:13px;cursor:pointer;}
-
-  .foot{text-align:center;font-size:10.5px;color:#5d7796;margin-top:4px;}
-  .sig{text-align:right;font-size:11px;color:#7d97b8;margin-top:10px;letter-spacing:.3px;}
-  .sig a{color:var(--accent);text-decoration:none;}
-  .sig a:hover{text-decoration:underline;}
-  .sig b{color:var(--accent);}
-  .about{font-size:12px;line-height:1.6;color:#9bb2cc;margin-top:12px;padding:12px 14px;
-    border:1px solid var(--line);border-radius:10px;background:rgba(255,255,255,.02);}
-
-  .shipchoice{display:flex;gap:10px;flex-wrap:wrap;}
-  .shipbtn{flex:1;min-width:130px;background:var(--ink);border:1px solid var(--line);color:var(--txt);
-    border-radius:10px;padding:14px 10px;font-size:15px;font-weight:700;text-align:center;cursor:pointer;line-height:1.4;}
-  .shipbtn span{display:block;font-size:11px;font-weight:400;color:var(--muted);margin-top:4px;}
-  .shipbtn.active{border-color:var(--accent);box-shadow:0 0 0 2px rgba(47,128,237,.4);color:#1a2a4a;}
-  .shipbtn.active span{color:var(--accent);}
-
-  .tabview{display:none;}
-  .tabview.active{display:block;overflow-y:auto;-webkit-overflow-scrolling:touch;}
-
-  .search-row{display:flex;gap:10px;align-items:flex-end;}
-  .search-row input{flex:1;}
-  .search-btn{background:var(--accent);color:#fff;border:none;border-radius:10px;padding:14px 22px;font-weight:700;cursor:pointer;}
-  .search-btn:disabled{opacity:.6;cursor:not-allowed;}
-  .sim-result{margin-top:20px;}
-  .sim-card{background:var(--ink);border:1px solid var(--line);border-radius:12px;padding:18px;}
-  .sim-card h3{margin:0 0 8px;font-size:17px;}
-  .sim-weight{font-size:32px;font-weight:700;color:#e0a800;margin:8px 0 4px;}
-  .sim-weight span{font-size:14px;color:var(--muted);}
-  .sim-confidence{display:inline-block;font-size:12px;padding:2px 9px;border-radius:20px;margin-bottom:10px;}
-  .sim-confidence.high{background:rgba(22,160,133,.2);color:#16a085;}
-  .sim-confidence.medium{background:rgba(230,162,0,.2);color:#e0a800;}
-  .sim-confidence.low{background:rgba(231,76,60,.2);color:#e74c3c;}
-  .sim-sources{font-size:12px;color:#9bb2cc;line-height:1.5;margin-top:12px;}
-  .sim-sources a{color:#2f80ed;text-decoration:none;}
-
-  .ticker-bar{
-    position:fixed; top: env(safe-area-inset-top); left:0;right:0; z-index:100;
-    background:rgba(11,31,58,.96); border-bottom:1px solid var(--line);
-    padding:6px 0; height:38px; display:flex; align-items:center;
-    font-size:12px; color:#c8d9ec; overflow:hidden;
+  .tab-select:focus {
+    border-color: var(--navy-light);
+    box-shadow: 0 0 0 3px rgba(30, 58, 95, 0.1);
   }
-  .ticker-label{padding:0 20px 0 16px;font-weight:700;letter-spacing:.5px;color:#9bb2cc;
-    flex-shrink:0;border-right:1px solid var(--line); min-width:168px; background:#0b1f3a; z-index:20;
-    position:relative; box-shadow: 60px 0 50px #0b1f3a;}
-  .ticker-content{display:flex;gap:28px;white-space:nowrap;animation:ticker 28s linear infinite;
-    padding-left:22px; margin-left:12px;}
-  .ticker-item{display:flex;align-items:center;gap:6px;}
-  .ticker-item .sym{font-weight:700;color:#fff;}
-  .ticker-item .price{font-weight:600;color:#eaf2fb;}
-  .ticker-item .chg{font-size:11px;padding:1px 6px;border-radius:4px;}
-  .ticker-item .chg.up{color:#16a085;background:rgba(22,160,133,.15);}
-  .ticker-item .chg.down{color:#e74c3c;background:rgba(231,76,60,.15);}
-  @keyframes ticker{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+
+  /* Cards */
+  .card {
+    background: var(--white);
+    border: 1px solid var(--gray-200);
+    border-radius: 16px;
+    padding: 24px;
+    box-shadow: var(--shadow);
+    margin-bottom: 20px;
+  }
+
+  .head {
+    text-align: center;
+    margin-bottom: 24px;
+  }
+
+  .head .eyebrow {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    color: var(--gray-600);
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+
+  .head h1 {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--navy);
+    letter-spacing: -0.6px;
+    margin-bottom: 6px;
+  }
+
+  .head .sub {
+    font-size: 13.5px;
+    color: var(--gray-600);
+    max-width: 320px;
+    margin: 0 auto;
+  }
+
+  /* Form elements */
+  .field {
+    margin-bottom: 18px;
+  }
+
+  .field label {
+    display: block;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--gray-700);
+    margin-bottom: 8px;
+    letter-spacing: 0.3px;
+  }
+
+  input[type="number"], input[type="text"] {
+    width: 100%;
+    background: var(--gray-50);
+    border: 1px solid var(--gray-200);
+    color: var(--gray-800);
+    font-size: 22px;
+    font-weight: 600;
+    padding: 14px 18px;
+    border-radius: 12px;
+    outline: none;
+    transition: all 0.2s ease;
+  }
+
+  input:focus {
+    border-color: var(--navy-light);
+    background: var(--white);
+    box-shadow: 0 0 0 4px rgba(30, 58, 95, 0.08);
+  }
+
+  /* Result box */
+  .result {
+    background: linear-gradient(145deg, var(--gray-50), var(--white));
+    border: 1px solid var(--gray-200);
+    border-radius: 14px;
+    padding: 20px;
+    text-align: center;
+    margin-top: 8px;
+  }
+
+  .result .big {
+    font-size: 36px;
+    font-weight: 700;
+    color: var(--navy);
+    letter-spacing: -1px;
+    line-height: 1;
+  }
+
+  .result .unit {
+    font-size: 14px;
+    color: var(--gray-600);
+    margin-left: 4px;
+    font-weight: 500;
+  }
+
+  .result .formula {
+    font-size: 12px;
+    color: var(--gray-600);
+    margin-top: 10px;
+    font-weight: 500;
+  }
+
+  /* Rate info */
+  .rate {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 16px;
+    margin-top: 16px;
+    border-top: 1px solid var(--gray-200);
+    font-size: 13px;
+    color: var(--gray-600);
+  }
+
+  .rate .v {
+    font-weight: 700;
+    color: var(--navy);
+    font-size: 15px;
+  }
+
+  .rate .v b {
+    color: var(--teal);
+  }
+
+  /* Buttons */
+  button.refresh {
+    background: var(--navy);
+    color: white;
+    border: none;
+    padding: 11px 20px;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  button.refresh:hover {
+    background: var(--navy-light);
+    transform: translateY(-1px);
+  }
+
+  .shipchoice {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  .shipbtn {
+    flex: 1;
+    min-width: 130px;
+    background: var(--gray-50);
+    border: 1px solid var(--gray-200);
+    color: var(--gray-700);
+    border-radius: 12px;
+    padding: 14px 12px;
+    font-size: 14px;
+    font-weight: 600;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .shipbtn span {
+    display: block;
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--gray-600);
+    margin-top: 4px;
+  }
+
+  .shipbtn.active {
+    background: var(--navy);
+    color: white;
+    border-color: var(--navy);
+    box-shadow: 0 4px 12px rgba(10, 22, 41, 0.2);
+  }
+
+  .shipbtn.active span {
+    color: rgba(255,255,255,0.85);
+  }
+
+  /* Footer */
+  .sig {
+    text-align: right;
+    font-size: 12px;
+    color: var(--gray-600);
+    margin-top: 24px;
+  }
+
+  .sig a {
+    color: var(--navy);
+    text-decoration: none;
+    font-weight: 600;
+  }
+
+  .about {
+    font-size: 12px;
+    color: var(--gray-600);
+    margin-top: 20px;
+    padding: 16px;
+    background: var(--gray-50);
+    border-radius: 12px;
+    border: 1px solid var(--gray-200);
+    line-height: 1.6;
+  }
+
+  /* Ticker */
+  .ticker-bar {
+    position: fixed;
+    top: env(safe-area-inset-top);
+    left: 0;
+    right: 0;
+    z-index: 100;
+    background: var(--navy);
+    padding: 8px 0;
+    height: 42px;
+    display: flex;
+    align-items: center;
+    font-size: 12px;
+    color: #E0E7FF;
+    overflow: hidden;
+    box-shadow: 0 2px 10px rgba(0,0,0,.1);
+  }
+
+  .ticker-label {
+    padding: 0 20px 0 18px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    color: var(--gold);
+    flex-shrink: 0;
+    border-right: 1px solid rgba(255,255,255,0.15);
+    min-width: 175px;
+    background: var(--navy);
+    position: relative;
+    z-index: 20;
+  }
+
+  .ticker-content {
+    display: flex;
+    gap: 32px;
+    white-space: nowrap;
+    animation: ticker 32s linear infinite;
+    padding-left: 24px;
+  }
+
+  .ticker-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 500;
+  }
+
+  .ticker-item .sym {
+    font-weight: 700;
+    color: white;
+    font-size: 12.5px;
+  }
+
+  .ticker-item .price {
+    font-weight: 600;
+    color: #E0E7FF;
+  }
+
+  .ticker-item .chg {
+    font-size: 11px;
+    padding: 1px 7px;
+    border-radius: 4px;
+    font-weight: 600;
+  }
+
+  .ticker-item .chg.up {
+    color: #34D399;
+    background: rgba(52, 211, 153, 0.15);
+  }
+
+  .ticker-item .chg.down {
+    color: #F87171;
+    background: rgba(248, 113, 113, 0.15);
+  }
+
+  @keyframes ticker {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+
+  /* Responsive */
+  @media (max-width: 480px) {
+    .wrap {
+      padding: 20px 16px 80px 16px;
+    }
+    .head h1 {
+      font-size: 22px;
+    }
+  }
 </style>
 </head>
 <body>
+<!-- Ticker -->
 <div class="ticker-bar">
-  <div class="ticker-label">📈 Marchés en direct</div>
+  <div class="ticker-label">📈 MARCHÉS EN DIRECT</div>
   <div class="ticker-content" id="ticker-content">
-    <div class="ticker-item"><span class="sym">BTC</span> <span class="price" id="btc-price">...</span> <span class="chg" id="btc-chg"></span></div>
-    <div class="ticker-item"><span class="sym">OR</span> <span class="price" id="gold-price">...</span> <span class="chg" id="gold-chg"></span></div>
-    <div class="ticker-item"><span class="sym">SH</span> <span class="price" id="sh-price">3 428</span> <span class="chg" id="sh-chg">+0.8%</span></div>
-    <div class="ticker-item"><span class="sym">SPX</span> <span class="price" id="sp-price">5 612</span> <span class="chg" id="sp-chg">-0.3%</span></div>
-  </div>
-</div>
-
-<div class="bg">
-  <div class="grid"></div>
-  <div class="band top"></div>
-  <div class="sun"></div>
-
-  <!-- Nuages -->
-  <svg class="cloud c1" viewBox="0 0 200 60" xmlns="http://www.w3.org/2000/svg">
-    <ellipse cx="45" cy="40" rx="38" ry="17" fill="#eaf2fb"/>
-    <ellipse cx="82" cy="27" rx="30" ry="21" fill="#eaf2fb"/>
-    <ellipse cx="122" cy="37" rx="36" ry="16" fill="#eaf2fb"/>
-    <ellipse cx="158" cy="41" rx="24" ry="13" fill="#eaf2fb"/>
-  </svg>
-  <svg class="cloud c2" viewBox="0 0 200 60" xmlns="http://www.w3.org/2000/svg">
-    <ellipse cx="40" cy="42" rx="28" ry="13" fill="#eaf2fb"/>
-    <ellipse cx="68" cy="31" rx="22" ry="16" fill="#eaf2fb"/>
-    <ellipse cx="98" cy="40" rx="26" ry="12" fill="#eaf2fb"/>
-  </svg>
-  <svg class="cloud c3" viewBox="0 0 200 60" xmlns="http://www.w3.org/2000/svg">
-    <ellipse cx="50" cy="39" rx="34" ry="15" fill="#eaf2fb"/>
-    <ellipse cx="90" cy="26" rx="27" ry="19" fill="#eaf2fb"/>
-    <ellipse cx="128" cy="38" rx="30" ry="14" fill="#eaf2fb"/>
-  </svg>
-
-  <!-- Avion principal -->
-  <svg class="plane" viewBox="0 0 260 85" xmlns="http://www.w3.org/2000/svg">
-    <path d="M20 42 Q25 30 65 28 L195 28 Q225 32 238 42 Q225 52 195 54 L65 54 Q25 52 20 42 Z" fill="#f8fafc"/>
-    <path d="M85 35 L35 68 L58 68 L100 37 Z" fill="#d1d9e8"/>
-    <path d="M88 37 L42 64 L60 64 L96 39 Z" fill="#b8c5d9"/>
-    <path d="M175 35 L225 68 L202 68 L160 37 Z" fill="#d1d9e8"/>
-    <path d="M172 37 L218 64 L200 64 L164 39 Z" fill="#b8c5d9"/>
-    <ellipse cx="102" cy="52" rx="13" ry="7.5" fill="#475569"/>
-    <ellipse cx="102" cy="52" rx="9" ry="5" fill="#64748b"/>
-    <ellipse cx="158" cy="52" rx="13" ry="7.5" fill="#475569"/>
-    <ellipse cx="158" cy="52" rx="9" ry="5" fill="#64748b"/>
-    <rect x="72" y="36" width="5" height="5" rx="1.2" fill="#1e40af"/>
-    <rect x="82" y="36" width="5" height="5" rx="1.2" fill="#1e40af"/>
-    <rect x="92" y="36" width="5" height="5" rx="1.2" fill="#1e40af"/>
-    <rect x="102" y="36" width="5" height="5" rx="1.2" fill="#1e40af"/>
-    <rect x="112" y="36" width="5" height="5" rx="1.2" fill="#1e40af"/>
-    <rect x="122" y="36" width="5" height="5" rx="1.2" fill="#1e40af"/>
-    <rect x="132" y="36" width="5" height="5" rx="1.2" fill="#1e40af"/>
-    <rect x="142" y="36" width="5" height="5" rx="1.2" fill="#1e40af"/>
-    <rect x="152" y="36" width="5" height="5" rx="1.2" fill="#1e40af"/>
-    <rect x="162" y="36" width="5" height="5" rx="1.2" fill="#1e40af"/>
-    <path d="M205 35 L235 28 L235 56 L205 49 Z" fill="#e2e8f0"/>
-    <ellipse cx="232" cy="42" rx="10" ry="6.5" fill="#1e3a5f"/>
-    <ellipse cx="235" cy="42" rx="5" ry="3.5" fill="#0ea5e9"/>
-  </svg>
-
-  <!-- Avion secondaire -->
-  <svg class="plane p2" viewBox="0 0 260 85" xmlns="http://www.w3.org/2000/svg">
-    <path d="M20 42 Q25 30 65 28 L195 28 Q225 32 238 42 Q225 52 195 54 L65 54 Q25 52 20 42 Z" fill="#e2e8f0"/>
-    <path d="M85 35 L35 68 L58 68 L100 37 Z" fill="#cbd5e1"/>
-    <path d="M175 35 L225 68 L202 68 L160 37 Z" fill="#cbd5e1"/>
-    <ellipse cx="102" cy="52" rx="12" ry="7" fill="#64748b"/>
-    <ellipse cx="158" cy="52" rx="12" ry="7" fill="#64748b"/>
-    <path d="M205 35 L235 28 L235 56 L205 49 Z" fill="#94a3b8"/>
-    <ellipse cx="232" cy="42" rx="9" ry="6" fill="#334155"/>
-  </svg>
-
-  <!-- Bateau principal -->
-  <svg class="ship" viewBox="0 0 280 98" xmlns="http://www.w3.org/2000/svg">
-    <path d="M8 68 L8 52 L248 52 L268 62 L252 78 L14 78 Z" fill="#1a324a"/>
-    <rect x="12" y="52" width="238" height="7" fill="#2c465f"/>
-    <rect x="18" y="46" width="215" height="7" fill="#253d54"/>
-    <rect x="22" y="30" width="18" height="17" fill="#c0392b"/>
-    <rect x="42" y="30" width="18" height="17" fill="#2980b9"/>
-    <rect x="62" y="30" width="18" height="17" fill="#e0a800"/>
-    <rect x="82" y="30" width="18" height="17" fill="#27ae60"/>
-    <rect x="102" y="30" width="18" height="17" fill="#8e44ad"/>
-    <rect x="122" y="30" width="18" height="17" fill="#16a085"/>
-    <rect x="142" y="30" width="18" height="17" fill="#c0392b"/>
-    <rect x="162" y="30" width="18" height="17" fill="#e0a800"/>
-    <rect x="182" y="30" width="18" height="17" fill="#2980b9"/>
-    <rect x="26" y="14" width="18" height="17" fill="#2980b9"/>
-    <rect x="46" y="14" width="18" height="17" fill="#16a085"/>
-    <rect x="66" y="14" width="18" height="17" fill="#e0a800"/>
-    <rect x="86" y="14" width="18" height="17" fill="#c0392b"/>
-    <rect x="106" y="14" width="18" height="17" fill="#27ae60"/>
-    <rect x="126" y="14" width="18" height="17" fill="#8e44ad"/>
-    <rect x="198" y="22" width="38" height="32" rx="3" fill="#2c465f"/>
-    <rect x="202" y="26" width="8" height="8" fill="#cfe3ff" opacity="0.9"/>
-    <rect x="214" y="26" width="8" height="8" fill="#cfe3ff" opacity="0.9"/>
-    <rect x="226" y="26" width="8" height="8" fill="#cfe3ff" opacity="0.9"/>
-    <rect x="218" y="8" width="14" height="16" fill="#c0392b"/>
-    <rect x="220" y="4" width="10" height="5" fill="#1a324a"/>
-    <ellipse cx="140" cy="82" rx="118" ry="5" fill="#0a1f33" opacity=".45"/>
-  </svg>
-
-  <!-- Bateau secondaire -->
-  <svg class="ship s2" viewBox="0 0 280 98" xmlns="http://www.w3.org/2000/svg">
-    <path d="M10 68 L10 54 L230 54 L248 63 L232 76 L16 76 Z" fill="#253d54"/>
-    <rect x="16" y="48" width="205" height="7" fill="#1a324a"/>
-    <rect x="24" y="32" width="16" height="17" fill="#2980b9"/>
-    <rect x="42" y="32" width="16" height="17" fill="#e0a800"/>
-    <rect x="60" y="32" width="16" height="17" fill="#27ae60"/>
-    <rect x="78" y="32" width="16" height="17" fill="#c0392b"/>
-    <rect x="96" y="32" width="16" height="17" fill="#16a085"/>
-    <rect x="28" y="16" width="16" height="17" fill="#e0a800"/>
-    <rect x="46" y="16" width="16" height="17" fill="#2980b9"/>
-    <rect x="64" y="16" width="16" height="17" fill="#c0392b"/>
-    <rect x="188" y="24" width="32" height="28" rx="2" fill="#2c465f"/>
-    <rect x="192" y="28" width="7" height="7" fill="#cfe3ff" opacity="0.85"/>
-    <rect x="202" y="28" width="7" height="7" fill="#cfe3ff" opacity="0.85"/>
-    <rect x="200" y="10" width="12" height="15" fill="#c0392b"/>
-  </svg>
-
-  <!-- Mer réaliste -->
-  <div class="sea">
-    <svg class="wave wave-back" viewBox="0 0 600 70" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M0 32 Q40 12 80 32 Q120 52 160 32 Q200 12 240 32 Q280 52 320 32 Q360 12 400 32 Q440 52 480 32 Q520 12 560 32 Q600 52 600 70 L0 70 Z"/>
-    </svg>
-    <svg class="wave wave-mid" viewBox="0 0 600 70" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M0 38 Q50 18 100 38 Q150 58 200 38 Q250 18 300 38 Q350 58 400 38 Q450 18 500 38 Q550 58 600 38 L600 70 L0 70 Z"/>
-    </svg>
-    <svg class="wave wave-front" viewBox="0 0 600 70" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M0 42 Q35 22 70 42 Q105 62 140 42 Q175 22 210 42 Q245 62 280 42 Q315 22 350 42 Q385 62 420 42 Q455 22 490 42 Q525 62 560 42 Q595 62 600 70 L0 70 Z"/>
-    </svg>
+    <div class="ticker-item"><span class="sym">BTC</span> <span class="price" id="btc-price">64 890</span> <span class="chg" id="btc-chg">+1.8%</span></div>
+    <div class="ticker-item"><span class="sym">CNY→Ar</span> <span class="price" id="gold-price">632.45</span></div>
+    <div class="ticker-item"><span class="sym">USD→Ar</span> <span class="price" id="sh-price">4 512</span></div>
+    <div class="ticker-item"><span class="sym">EUR→Ar</span> <span class="price" id="sp-price">4 890</span></div>
   </div>
 </div>
 
 <div class="wrap">
+  <!-- Header -->
   <div class="topnav">
-    <svg class="flagmg" viewBox="0 0 30 20" xmlns="http://www.w3.org/2000/svg" aria-label="Madagascar">
-      <rect x="0" y="0" width="12" height="20" fill="#ffffff"/>
-      <rect x="12" y="0" width="18" height="10" fill="#fc3e32"/>
-      <rect x="12" y="10" width="18" height="10" fill="#007e3a"/>
-    </svg>
+    <div class="brand">
+      <div class="brand-dot"></div>
+      <span>ExchangeMGA</span>
+    </div>
     <select class="tab-select" id="tab-select">
       <option value="change">Change</option>
       <option value="exp-avion">Exp Avion</option>
@@ -339,32 +464,42 @@
   <!-- Onglet Change -->
   <div class="tabview active" id="tab-change">
     <div class="head">
-      <div class="eyebrow">Commerce international / Change</div>
-      <h1>Convertisseur yuan/ariary</h1>
-      <div class="sub">Taux de change CNY/MGA en temps réel</div>
+      <div class="eyebrow">Commerce International</div>
+      <h1>Convertisseur Yuan / Ariary</h1>
+      <div class="sub">Taux de change CNY/MGA en temps réel pour le commerce international</div>
     </div>
+    
     <div class="card">
       <div class="field">
         <label>Prix en yuans chinois (CNY)</label>
         <input type="number" id="yuan" value="100" min="0" step="0.01" inputmode="decimal" />
       </div>
+
       <div class="route">
-        <div class="end"><svg viewBox="0 0 40 40"><circle cx="20" cy="20" r="18" fill="#16314a" stroke="#2f80ed"/><text x="20" y="26" font-size="16" text-anchor="middle" fill="#fff">Y</text></svg><b>CNY</b>Chine</div>
-        <span class="arrow">→</span>
-        <div class="end"><svg viewBox="0 0 40 40"><circle cx="20" cy="20" r="18" fill="#16314a" stroke="#e0a800"/><text x="20" y="26" font-size="14" text-anchor="middle" fill="#fff">Ar</text></svg><b>MGA</b>Madagascar</div>
+        <div class="end">
+          <b>CNY</b>
+          <span style="font-size:12px;color:#64748b">Chine</span>
+        </div>
+        <span style="color:#94a3b8;font-size:20px">→</span>
+        <div class="end">
+          <b>MGA</b>
+          <span style="font-size:12px;color:#64748b">Madagascar</span>
+        </div>
       </div>
+
       <div class="field" style="margin-top:14px;">
         <label>Montant en ariary (MGA)</label>
         <div class="result">
-          <span class="big" id="out">-</span><span class="unit">Ar</span>
-          <div class="formula">MGA = CNY × 1,03 × cours de change CNY/MGA</div>
+          <span class="big" id="out">-</span>
+          <span class="unit">Ar</span>
+          <div class="formula">MGA = CNY × 1,03 × cours de change</div>
         </div>
       </div>
+
       <div class="rate">
-        <div>1 CNY ≈ <span class="v"><b id="rate">...</b> Ar</span> &nbsp;<span id="src" class="status"><span class="dot"></span><span class="txt">Analyse IA…</span></span></div>
-        <button class="refresh" id="refresh">Actualiser le taux</button>
+        <div>1 CNY ≈ <span class="v"><b id="rate">...</b> Ar</span></div>
+        <button class="refresh" id="refresh">Actualiser</button>
       </div>
-      <div class="foot">Cours via ExchangeRate-API (open.er-api.com)</div>
     </div>
   </div>
 
@@ -372,29 +507,31 @@
   <div class="tabview" id="tab-exp-avion">
     <div class="head">
       <div class="eyebrow">Logistique Aérienne</div>
-      <h1>Exp Avion</h1>
-      <div class="sub">Frais d’expédition aérienne Chine → Madagascar</div>
+      <h1>Expédition par Avion</h1>
+      <div class="sub">Frais d’expédition aérienne depuis la Chine</div>
     </div>
+    
     <div class="card">
       <div class="field">
-        <label>1. Poids du produit (grammes)</label>
-        <input type="number" id="grams" value="1000" min="0" step="1" inputmode="decimal" />
+        <label>Poids du produit (grammes)</label>
+        <input type="number" id="grams" value="1000" min="0" step="1" />
       </div>
+
       <div class="field">
-        <label>2. Type d’envoi</label>
+        <label>Type d’envoi</label>
         <div class="shipchoice">
-          <button type="button" class="shipbtn active" data-mode="express">Envoi express<span>83 000 Ar/kg</span></button>
-          <button type="button" class="shipbtn" data-mode="normal">Envoi normal<span>70 000 Ar/kg</span></button>
+          <button type="button" class="shipbtn active" data-mode="express">Express<span>83 000 Ar/kg</span></button>
+          <button type="button" class="shipbtn" data-mode="normal">Normal<span>70 000 Ar/kg</span></button>
         </div>
       </div>
-      <div class="field" style="margin-top:14px;">
-        <label>3. Prix d’envoi estimé (Ariary)</label>
+
+      <div class="field">
+        <label>Prix d’expédition</label>
         <div class="result">
-          <span class="big" id="shipOut">-</span><span class="unit">Ar</span>
-          <div class="formula">Prix (Ar) = poids (g) × tarif (Ar/kg) / 1 000</div>
+          <span class="big" id="shipOut">-</span>
+          <span class="unit">Ar</span>
         </div>
       </div>
-      <div class="foot">Express : 83 000 Ar/kg • Normal : 70 000 Ar/kg</div>
     </div>
   </div>
 
@@ -402,23 +539,24 @@
   <div class="tabview" id="tab-exp-bat">
     <div class="head">
       <div class="eyebrow">Logistique Maritime</div>
-      <h1>Exp Bat</h1>
-      <div class="sub">Calcul du coût d’expédition maritime (par m³)</div>
+      <h1>Expédition par Bateau</h1>
+      <div class="sub">Calcul du coût maritime par m³</div>
     </div>
+    
     <div class="card">
       <div class="field">
-        <label>Dimensions du colis (cm)</label>
+        <label>Dimensions (cm)</label>
         <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;">
-          <div><input type="number" id="length" value="50" min="1"><div style="font-size:10px;color:#9bb2cc;text-align:center;">Longueur</div></div>
-          <div><input type="number" id="width" value="40" min="1"><div style="font-size:10px;color:#9bb2cc;text-align:center;">Largeur</div></div>
-          <div><input type="number" id="height" value="30" min="1"><div style="font-size:10px;color:#9bb2cc;text-align:center;">Hauteur</div></div>
+          <input type="number" id="length" value="50" placeholder="L">
+          <input type="number" id="width" value="40" placeholder="l">
+          <input type="number" id="height" value="30" placeholder="H">
         </div>
       </div>
 
-      <div class="field" style="margin-top:10px;">
-        <label>Volume calculé</label>
-        <div class="result" style="padding:12px 16px;">
-          <span class="big" id="volume-m3" style="font-size:28px;">0.060</span>
+      <div class="field">
+        <label>Volume</label>
+        <div class="result">
+          <span class="big" id="volume-m3">0.060</span>
           <span class="unit">m³</span>
         </div>
       </div>
@@ -426,342 +564,218 @@
       <div class="field">
         <label>Type de produit</label>
         <div class="shipchoice">
-          <button type="button" class="shipbtn active" onclick="
-            this.parentElement.querySelectorAll('.shipbtn').forEach(b => b.classList.remove('active'));
-            this.classList.add('active');
-            const l = parseFloat(document.getElementById('length').value)||0;
-            const w = parseFloat(document.getElementById('width').value)||0;
-            const h = parseFloat(document.getElementById('height').value)||0;
-            const vol = (l*w*h)/1000000;
-            document.getElementById('volume-m3').innerText = vol.toFixed(3);
-            const rate = 360;
-            const usd = vol * rate;
-            document.getElementById('maritime-price-usd').innerText = usd.toFixed(2);
-            document.getElementById('maritime-price-mga').innerText = Math.round(usd * 4500).toLocaleString('fr-FR');
-            document.getElementById('maritime-formula').innerText = rate + ' $ × ' + vol.toFixed(3) + ' m³';
-          ">Produit général<span>360 $ / m³</span></button>
-          
-          <button type="button" class="shipbtn" onclick="
-            this.parentElement.querySelectorAll('.shipbtn').forEach(b => b.classList.remove('active'));
-            this.classList.add('active');
-            const l = parseFloat(document.getElementById('length').value)||0;
-            const w = parseFloat(document.getElementById('width').value)||0;
-            const h = parseFloat(document.getElementById('height').value)||0;
-            const vol = (l*w*h)/1000000;
-            document.getElementById('volume-m3').innerText = vol.toFixed(3);
-            const rate = 410;
-            const usd = vol * rate;
-            document.getElementById('maritime-price-usd').innerText = usd.toFixed(2);
-            document.getElementById('maritime-price-mga').innerText = Math.round(usd * 4500).toLocaleString('fr-FR');
-            document.getElementById('maritime-formula').innerText = rate + ' $ × ' + vol.toFixed(3) + ' m³';
-          ">Batterie ou &lt; 0.25m³<span>410 $ / m³</span></button>
+          <button type="button" class="shipbtn active" data-type="general">Général<span>360 $ / m³</span></button>
+          <button type="button" class="shipbtn" data-type="battery">Batterie / &lt;0.25m³<span>410 $ / m³</span></button>
         </div>
       </div>
 
-      <div class="field" style="margin-top:14px;">
-        <label>Prix d’expédition estimé</label>
+      <div class="field">
+        <label>Prix estimé</label>
         <div class="result">
-          <span class="big" id="maritime-price-usd" style="color:#e0a800;">—</span>
+          <span class="big" id="maritime-price-usd">21.60</span>
           <span class="unit">$</span>
-          <div style="margin-top:8px; font-size:15px; color:#e0a800;">
-            <span id="maritime-price-mga">—</span> <span style="font-size:13px;">Ar</span>
+          <div style="margin-top:6px;font-size:15px;color:#334155;">
+            <span id="maritime-price-mga">97 200</span> <span style="font-size:12px;">Ar</span>
           </div>
-          <div class="formula" id="maritime-formula">360 $ × 0.060 m³</div>
         </div>
       </div>
-
-      <div class="foot">Tarif maritime : 360 $/m³ (général) • 410 $/m³ (batterie ou &lt; 0.25 m³)</div>
     </div>
   </div>
 
   <!-- Onglet Simulation -->
   <div class="tabview" id="tab-simulation">
     <div class="head">
-      <div class="eyebrow">Estimation logistique</div>
-      <h1>Simulation produit</h1>
-      <div class="sub">Recherche automatique du poids</div>
+      <div class="eyebrow">Estimation Produit</div>
+      <h1>Simulation de poids</h1>
+      <div class="sub">Estimation automatique du poids</div>
     </div>
+    
     <div class="card">
       <div class="field">
         <label>Nom du produit</label>
-        <div class="search-row">
-          <input type="text" id="product-name" placeholder="Ex. : iPhone 16 Pro, t-shirt..." />
-          <button class="search-btn" id="search-btn">Rechercher</button>
+        <div style="display:flex;gap:10px;">
+          <input type="text" id="product-name" placeholder="iPhone 16 Pro..." style="flex:1;">
+          <button class="refresh" id="search-btn" style="padding:14px 22px;">Rechercher</button>
         </div>
       </div>
 
-      <div class="sim-result" id="sim-result" style="display:none;">
-        <div class="sim-card">
-          <h3 id="sim-product-name"></h3>
-          <div><span class="sim-confidence" id="sim-confidence"></span></div>
-          <div class="sim-weight"><span id="sim-weight-value"></span> <span>g</span></div>
-          <div class="sim-sources" id="sim-sources"></div>
-          <div style="font-size:11px;color:#5d7796;margin-top:6px;">Estimation locale (base CSV + règles)</div>
-          <div id="ai-results" style="margin-top:14px;"></div>
+      <div class="sim-result" id="sim-result" style="display:none;margin-top:20px;">
+        <div class="card" style="margin:0;">
+          <h3 id="sim-product-name" style="margin-bottom:8px;"></h3>
+          <div class="sim-weight" style="font-size:28px;color:#0A1629;">
+            <span id="sim-weight-value"></span> <span style="font-size:14px;color:#64748b;">g</span>
+          </div>
+          <div class="sim-sources" id="sim-sources" style="margin-top:12px;font-size:12px;"></div>
         </div>
       </div>
     </div>
   </div>
 
-  <div class="sig">Réalisé par <a href="https://www.facebook.com/share/1M1XCvEo1R/" target="_blank" rel="noopener noreferrer"><b>Mathieu.RMB</b></a></div>
-  
-  <div class="about">
-    Outil de conversion et d’estimation logistique entre la Chine et Madagascar.
+  <div class="sig">
+    Réalisé par <a href="https://www.facebook.com/share/1M1XCvEo1R/" target="_blank"><b>Mathieu.RMB</b></a>
   </div>
 </div>
 
 <script>
-  try {
-    // === CHANGE ===
-    const yuanEl = document.getElementById('yuan');
-    const outEl = document.getElementById('out');
-    const rateEl = document.getElementById('rate');
-    const srcEl = document.getElementById('src');
+  // === CHANGE ===
+  const yuanEl = document.getElementById('yuan');
+  const outEl = document.getElementById('out');
+  const rateEl = document.getElementById('rate');
 
-    function calcChange(rate) {
-      const y = parseFloat(yuanEl.value);
-      if (isNaN(y) || y < 0) { outEl.textContent = '-'; return; }
-      outEl.textContent = (y * 1.03 * rate).toLocaleString('fr-FR', {maximumFractionDigits:2});
-    }
-
-    function fetchRate() {
-      srcEl.className = 'status';
-      srcEl.innerHTML = '<span class="dot"></span><span class="txt">Recherche du taux…</span>';
-      rateEl.textContent = '...';
-
-      const sources = [
-        { url: 'https://open.er-api.com/v6/latest/CNY', label: 'open.er-api.com', page: 'https://www.exchangerate-api.com/docs/free' }
-      ];
-
-      function tryNext(i) {
-        if (i >= sources.length) {
-          const fb = parseFloat(localStorage.getItem('yuan_rate')) || 631.89;
-          rateEl.textContent = fb.toLocaleString('fr-FR', {maximumFractionDigits:2});
-          srcEl.className = 'status bad';
-          srcEl.innerHTML = '<span class="dot"></span><span class="txt">hors ligne</span>';
-          calcChange(fb);
-          return;
-        }
-        fetch(sources[i].url).then(r => r.json()).then(j => {
-          const v = j?.rates?.MGA;
-          if (v) {
-            rateEl.textContent = v.toLocaleString('fr-FR', {maximumFractionDigits:2});
-            srcEl.innerHTML = `<span class="dot"></span><span class="txt"><a href="${sources[i].page}" target="_blank" style="color:#16a085;text-decoration:underline;">${sources[i].label}</a></span>`;
-            calcChange(v);
-            localStorage.setItem('yuan_rate', v);
-          } else {
-            tryNext(i + 1);
-          }
-        }).catch(() => tryNext(i + 1));
-      }
-      tryNext(0);
-    }
-
-    yuanEl.addEventListener('input', () => calcChange(parseFloat(localStorage.getItem('yuan_rate')) || 631.89));
-    document.getElementById('refresh').addEventListener('click', fetchRate);
-    
-    const cached = parseFloat(localStorage.getItem('yuan_rate'));
-    if (cached) { rateEl.textContent = cached.toLocaleString('fr-FR',{maximumFractionDigits:2}); calcChange(cached); }
-    fetchRate();
-
-    // === MENU DÉROULANT ===
-    const tabSelect = document.getElementById('tab-select');
-    function switchTab(tabName) {
-      document.querySelectorAll('.tabview').forEach(v => v.classList.remove('active'));
-      const target = document.getElementById('tab-' + tabName);
-      if (target) target.classList.add('active');
-      if (tabSelect) tabSelect.value = tabName;
-    }
-    if (tabSelect) tabSelect.addEventListener('change', () => switchTab(tabSelect.value));
-    switchTab('change');
-
-    // === EXP AVION ===
-    const gramsEl = document.getElementById('grams');
-    const shipOut = document.getElementById('shipOut');
-    let shipMode = 'express';
-    const shipBtns = document.querySelectorAll('#tab-exp-avion .shipbtn');
-
-    function calcShip() {
-      const g = parseFloat(gramsEl.value);
-      if (isNaN(g) || g < 0) { shipOut.textContent = '-'; return; }
-      const tarif = shipMode === 'express' ? 83000 : 70000;
-      shipOut.textContent = (g * tarif / 1000).toLocaleString('fr-FR', {maximumFractionDigits:2});
-    }
-    gramsEl.addEventListener('input', calcShip);
-    shipBtns.forEach(b => {
-      b.addEventListener('click', () => {
-        shipBtns.forEach(x => x.classList.remove('active'));
-        b.classList.add('active');
-        shipMode = b.dataset.mode;
-        calcShip();
-      });
-    });
-    calcShip();
-
-    // === EXP BAT (CORRIGÉ) ===
-    const lengthEl = document.getElementById('length');
-    const widthEl = document.getElementById('width');
-    const heightEl = document.getElementById('height');
-    const volumeEl = document.getElementById('volume-m3');
-    const maritimePriceUsdEl = document.getElementById('maritime-price-usd');
-    const maritimePriceMgaEl = document.getElementById('maritime-price-mga');
-    const maritimeFormulaEl = document.getElementById('maritime-formula');
-
-    let maritimeType = 'general';
-    let usdToMgaRate = 4500;
-
-    // Fonction globale simple pour les boutons
-    window.changeMaritimeType = function(element, type) {
-      // Désactive tous les boutons dans Exp Bat
-      document.querySelectorAll('#tab-exp-bat .shipbtn').forEach(btn => {
-        btn.classList.remove('active');
-      });
-      
-      // Active le bouton cliqué
-      element.classList.add('active');
-      
-      // Met à jour le type
-      maritimeType = type;
-      
-      // Recalcule le prix
-      if (typeof calculateMaritime === 'function') {
-        calculateMaritime();
-      }
-    };
-
-    async function fetchUsdMgaRate() {
-      try {
-        const res = await fetch('https://open.er-api.com/v6/latest/USD');
-        const data = await res.json();
-        if (data?.rates?.MGA) usdToMgaRate = data.rates.MGA;
-      } catch (e) {}
-    }
-    fetchUsdMgaRate();
-    setInterval(fetchUsdMgaRate, 300000);
-
-    function calculateMaritime() {
-      const l = parseFloat(lengthEl?.value) || 0;
-      const w = parseFloat(widthEl?.value) || 0;
-      const h = parseFloat(heightEl?.value) || 0;
-
-      const volumeM3 = (l * w * h) / 1000000;
-      if (volumeEl) volumeEl.textContent = volumeM3.toFixed(3);
-
-      const rate = (maritimeType === 'battery' || volumeM3 < 0.25) ? 410 : 360;
-      const priceUSD = volumeM3 * rate;
-      const priceMGA = Math.round(priceUSD * usdToMgaRate);
-
-      if (maritimePriceUsdEl) maritimePriceUsdEl.textContent = priceUSD.toFixed(2);
-      if (maritimePriceMgaEl) maritimePriceMgaEl.textContent = priceMGA.toLocaleString('fr-FR');
-      if (maritimeFormulaEl) {
-        maritimeFormulaEl.textContent = `${rate} $ × ${volumeM3.toFixed(3)} m³ = ${priceUSD.toFixed(2)} $ ≈ ${priceMGA.toLocaleString('fr-FR')} Ar`;
-      }
-    }
-
-    [lengthEl, widthEl, heightEl].forEach(el => {
-      if (el) el.addEventListener('input', calculateMaritime);
-    });
-
-    // === BOUTONS EXP BAT - INITIALISATION DIRECTE (pas de délai) ===
-    function initExpBatButtons() {
-      const buttons = document.querySelectorAll('#tab-exp-bat .shipbtn');
-      
-      buttons.forEach(btn => {
-        btn.addEventListener('click', function() {
-          buttons.forEach(b => b.classList.remove('active'));
-          this.classList.add('active');
-          maritimeType = this.getAttribute('data-type') || 'general';
-          calculateMaritime();
-        });
-      });
-      
-      calculateMaritime();
-    }
-    
-    // Appel direct (le script s'exécute après le DOM)
-    initExpBatButtons();
-
-    // === SIMULATION ===
-    const simInput = document.getElementById('product-name');
-    const simBtn = document.getElementById('search-btn');
-    const simResult = document.getElementById('sim-result');
-    const simName = document.getElementById('sim-product-name');
-    const simWeight = document.getElementById('sim-weight-value');
-    const simConf = document.getElementById('sim-confidence');
-    const simSources = document.getElementById('sim-sources');
-
-    let isDBLoaded = false;
-    let productDB = {};
-
-    // Base de données produits
-    productDB = {
-      "iphone 16 pro": { weight: 199, confidence: "high", sources: ["apple.com"] },
-      "iphone 16 pro max": { weight: 227, confidence: "high", sources: ["apple.com"] },
-      "t-shirt en coton pour homme": { weight: 180, confidence: "high", sources: ["hm.com"] },
-      "batterie externe anker 10000": { weight: 195, confidence: "high", sources: ["anker.com"] },
-    };
-
-    function normalizeText(text) {
-      return (text || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').trim();
-    }
-
-    function getBestMatch(query) {
-      const q = normalizeText(query);
-      if (productDB[q]) return { ...productDB[q], agent: "Base officielle" };
-
-      let bestMatch = null;
-      let bestScore = 0;
-
-      for (let key in productDB) {
-        const nk = normalizeText(key);
-        let score = 0;
-        if (nk === q) score = 100;
-        else if (nk.includes(q)) score = 85;
-        else if (q.includes(nk)) score = 75;
-        if (score > bestScore) { bestScore = score; bestMatch = { ...productDB[key], agent: "Correspondance" }; }
-      }
-
-      if (bestMatch && bestScore >= 40) return bestMatch;
-
-      // Règles logiques
-      if (q.includes("iphone")) return { weight: 199, confidence: "high", sources: ["apple.com"], agent: "Règle" };
-      if (q.includes("t-shirt")) return { weight: 175, confidence: "high", sources: ["hm.com"], agent: "Règle" };
-      if (q.includes("batterie")) return { weight: 195, confidence: "high", sources: ["anker.com"], agent: "Règle" };
-
-      return { weight: 380, confidence: "low", sources: ["Estimation"], agent: "Par défaut" };
-    }
-
-    async function showSimulationResult(productName) {
-      const data = getBestMatch(productName);
-      simName.textContent = productName;
-      simWeight.textContent = data.weight.toLocaleString('fr-FR');
-      simConf.textContent = data.confidence === "high" ? "✓ Fiable" : "≈ Estimation";
-      simConf.className = "sim-confidence " + data.confidence;
-      simSources.innerHTML = `<strong>Source :</strong> ${data.agent}<br>` + data.sources.map(s => `• ${s}`).join("<br>");
-      simResult.style.display = "block";
-    }
-
-    simBtn.addEventListener('click', () => {
-      const val = simInput.value.trim();
-      if (!val) return;
-      showSimulationResult(val);
-    });
-
-    simInput.addEventListener('keypress', (e) => {
-      if (e.key === "Enter") simBtn.click();
-    });
-
-    // Ticker
-    function updateTicker() {
-      // ... (code ticker simplifié)
-      setTimeout(updateTicker, 90000);
-    }
-    setTimeout(updateTicker, 1200);
-
-  } catch (err) {
-    console.error(err);
-    document.body.insertAdjacentHTML('beforeend', '<p style="color:#c53030;padding:20px">Erreur: ' + err.message + '</p>');
+  function calcChange(rate) {
+    const y = parseFloat(yuanEl.value);
+    if (isNaN(y) || y < 0) { outEl.textContent = '-'; return; }
+    outEl.textContent = (y * 1.03 * rate).toLocaleString('fr-FR', {maximumFractionDigits:2});
   }
+
+  function fetchRate() {
+    fetch('https://open.er-api.com/v6/latest/CNY')
+      .then(r => r.json())
+      .then(j => {
+        const v = j?.rates?.MGA;
+        if (v) {
+          rateEl.textContent = v.toLocaleString('fr-FR', {maximumFractionDigits:2});
+          localStorage.setItem('yuan_rate', v);
+          calcChange(v);
+        }
+      })
+      .catch(() => {
+        const fb = parseFloat(localStorage.getItem('yuan_rate')) || 631.89;
+        rateEl.textContent = fb.toLocaleString('fr-FR', {maximumFractionDigits:2});
+        calcChange(fb);
+      });
+  }
+
+  yuanEl.addEventListener('input', () => calcChange(parseFloat(localStorage.getItem('yuan_rate')) || 631.89));
+  document.getElementById('refresh').addEventListener('click', fetchRate);
+
+  const cached = parseFloat(localStorage.getItem('yuan_rate'));
+  if (cached) { rateEl.textContent = cached.toLocaleString('fr-FR',{maximumFractionDigits:2}); calcChange(cached); }
+  fetchRate();
+
+  // === TABS ===
+  const tabSelect = document.getElementById('tab-select');
+  function switchTab(tabName) {
+    document.querySelectorAll('.tabview').forEach(v => v.classList.remove('active'));
+    document.getElementById('tab-' + tabName).classList.add('active');
+    tabSelect.value = tabName;
+  }
+  tabSelect.addEventListener('change', () => switchTab(tabSelect.value));
+  switchTab('change');
+
+  // === EXP AVION ===
+  const gramsEl = document.getElementById('grams');
+  const shipOut = document.getElementById('shipOut');
+  let shipMode = 'express';
+  const shipBtns = document.querySelectorAll('#tab-exp-avion .shipbtn');
+
+  function calcShip() {
+    const g = parseFloat(gramsEl.value);
+    if (isNaN(g) || g < 0) { shipOut.textContent = '-'; return; }
+    const tarif = shipMode === 'express' ? 83000 : 70000;
+    shipOut.textContent = (g * tarif / 1000).toLocaleString('fr-FR', {maximumFractionDigits:2});
+  }
+  gramsEl.addEventListener('input', calcShip);
+  shipBtns.forEach(b => {
+    b.addEventListener('click', () => {
+      shipBtns.forEach(x => x.classList.remove('active'));
+      b.classList.add('active');
+      shipMode = b.dataset.mode;
+      calcShip();
+    });
+  });
+  calcShip();
+
+  // === EXP BAT ===
+  const lengthEl = document.getElementById('length');
+  const widthEl = document.getElementById('width');
+  const heightEl = document.getElementById('height');
+  const volumeEl = document.getElementById('volume-m3');
+  const maritimePriceUsdEl = document.getElementById('maritime-price-usd');
+  const maritimePriceMgaEl = document.getElementById('maritime-price-mga');
+  const maritimeFormulaEl = document.getElementById('maritime-formula');
+
+  let maritimeType = 'general';
+  let usdToMgaRate = 4500;
+
+  async function fetchUsdMgaRate() {
+    try {
+      const res = await fetch('https://open.er-api.com/v6/latest/USD');
+      const data = await res.json();
+      if (data?.rates?.MGA) usdToMgaRate = data.rates.MGA;
+    } catch(e) {}
+  }
+  fetchUsdMgaRate();
+  setInterval(fetchUsdMgaRate, 300000);
+
+  function calculateMaritime() {
+    const l = parseFloat(lengthEl.value) || 0;
+    const w = parseFloat(widthEl.value) || 0;
+    const h = parseFloat(heightEl.value) || 0;
+    const volumeM3 = (l * w * h) / 1000000;
+    volumeEl.textContent = volumeM3.toFixed(3);
+
+    const rate = (maritimeType === 'battery' || volumeM3 < 0.25) ? 410 : 360;
+    const priceUSD = volumeM3 * rate;
+    const priceMGA = Math.round(priceUSD * usdToMgaRate);
+
+    maritimePriceUsdEl.textContent = priceUSD.toFixed(2);
+    maritimePriceMgaEl.textContent = priceMGA.toLocaleString('fr-FR');
+    maritimeFormulaEl.textContent = `${rate} $ × ${volumeM3.toFixed(3)} m³`;
+  }
+
+  [lengthEl, widthEl, heightEl].forEach(el => el.addEventListener('input', calculateMaritime));
+
+  // Boutons Exp Bat
+  document.querySelectorAll('#tab-exp-bat .shipbtn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('#tab-exp-bat .shipbtn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      maritimeType = btn.dataset.type;
+      calculateMaritime();
+    });
+  });
+
+  setTimeout(calculateMaritime, 400);
+
+  // === SIMULATION ===
+  const simInput = document.getElementById('product-name');
+  const simBtn = document.getElementById('search-btn');
+  const simResult = document.getElementById('sim-result');
+
+  let productDB = {
+    "iphone 16 pro": { weight: 199, sources: ["apple.com"] },
+    "iphone 16 pro max": { weight: 227, sources: ["apple.com"] },
+    "t-shirt en coton": { weight: 180, sources: ["hm.com"] },
+    "batterie anker 10000": { weight: 195, sources: ["anker.com"] },
+  };
+
+  function getBestMatch(query) {
+    const q = query.toLowerCase().trim();
+    if (productDB[q]) return productDB[q];
+    if (q.includes("iphone")) return { weight: 199, sources: ["apple.com"] };
+    if (q.includes("t-shirt")) return { weight: 175, sources: ["hm.com"] };
+    if (q.includes("batterie")) return { weight: 195, sources: ["anker.com"] };
+    return { weight: 380, sources: ["Estimation"] };
+  }
+
+  simBtn.addEventListener('click', () => {
+    const val = simInput.value.trim();
+    if (!val) return;
+
+    const data = getBestMatch(val);
+    document.getElementById('sim-product-name').textContent = val;
+    document.getElementById('sim-weight-value').textContent = data.weight;
+    document.getElementById('sim-sources').innerHTML = data.sources.map(s => `• ${s}`).join("<br>");
+    simResult.style.display = "block";
+  });
+
+  // Ticker
+  function updateTicker() {
+    setTimeout(updateTicker, 90000);
+  }
+  setTimeout(updateTicker, 1200);
+
 </script>
 </body>
 </html>
