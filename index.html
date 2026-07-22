@@ -405,7 +405,7 @@
   function fetchRate() {
     if (!rateEl) return;
     fetch('https://open.er-api.com/v6/latest/CNY')
-      .then(r => r.json())
+      .then(r => r.ok ? r.json() : Promise.reject())
       .then(j => {
         const v = j?.rates?.MGA;
         if (v) {
@@ -487,9 +487,11 @@
   setInterval(fetchUsdMgaRate, 300000);
 
   function calculateMaritime() {
-    const l = Math.max(0, parseFloat(lengthEl?.value) || 0);
-    const w = Math.max(0, parseFloat(widthEl?.value) || 0);
-    const h = Math.max(0, parseFloat(heightEl?.value) || 0);
+    if (!lengthEl || !widthEl || !heightEl) return;
+
+    const l = Math.max(0, parseFloat(lengthEl.value) || 0);
+    const w = Math.max(0, parseFloat(widthEl.value) || 0);
+    const h = Math.max(0, parseFloat(heightEl.value) || 0);
     const volumeM3 = (l * w * h) / 1000000;
 
     if (volumeEl) volumeEl.textContent = volumeM3.toFixed(3);
@@ -531,6 +533,9 @@
     });
   }
   initMaritimeButtons();
+
+  // Initialisation sécurisée du type maritime
+  maritimeType = 'general';
   setTimeout(() => {
     if (typeof calculateMaritime === 'function') calculateMaritime();
   }, 400);
