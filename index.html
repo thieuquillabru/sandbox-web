@@ -24,7 +24,7 @@
   html,body{height:auto; min-height:100%;}
   body{
     font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
-    background:linear-gradient(180deg,#e0f0ff 0%,#f0f8ff 55%,#e8f4ff 100%);
+    background:linear-gradient(180deg,#a8d0ff 0%,#d4e9ff 45%,#f0f8ff 100%);
     color:#1a2a4a; overflow-y:auto; position:relative;
     padding-top:env(safe-area-inset-top);padding-bottom:env(safe-area-inset-bottom);
     -webkit-overflow-scrolling: touch;
@@ -41,11 +41,28 @@
   .band.top{top:0;background:linear-gradient(180deg,rgba(47,128,237,.12),transparent);}
 
   .sun {
-    position: absolute; top: 12%; right: 18%; width: 68px; height: 68px;
-    background: radial-gradient(circle at 35% 35%, #fffbeb 10%, #ffeb3b 35%, #ffc107 65%, #ff9800 100%);
+    position: absolute; top: 12%; right: 18%; width: 72px; height: 72px;
+    background: radial-gradient(circle at 35% 35%, #ffffff 8%, #fffbeb 22%, #ffeb3b 45%, #ffc107 72%, #ff9800 100%);
     border-radius: 50%;
-    box-shadow: 0 0 30px 15px rgba(255,200,50,.35), 0 0 60px 30px rgba(255,180,50,.2);
-    z-index: 1; opacity: 0.95;
+    box-shadow: 
+      0 0 18px 9px rgba(255,240,150,.9),
+      0 0 38px 19px rgba(255,210,80,.65),
+      0 0 65px 32px rgba(255,180,50,.4),
+      0 0 95px 48px rgba(255,150,30,.2);
+    z-index: 1; opacity: 1;
+    animation: sunPulse 3.8s ease-in-out infinite;
+  }
+  .sun::after {
+    content: "";
+    position: absolute;
+    inset: -32px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255,230,140,.55) 0%, rgba(255,230,140,0) 68%);
+    animation: sunPulse 3.8s ease-in-out infinite;
+  }
+  @keyframes sunPulse {
+    0%,100% { transform: scale(1); opacity: .9; }
+    50% { transform: scale(1.18); opacity: 1; }
   }
 
   .cloud{position:absolute;opacity:0.85;animation:drift linear infinite;}
