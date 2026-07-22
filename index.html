@@ -593,6 +593,7 @@
   // Ticker
   async function updateTicker() {
     try {
+      // BTC
       const btcRes = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd&include_24hr_change=true').catch(() => null);
       if (btcRes) {
         const btcData = await btcRes.json();
@@ -608,6 +609,34 @@
           }
         }
       }
+
+      // CNY -> MGA
+      const cnyRes = await fetch('https://open.er-api.com/v6/latest/CNY').catch(() => null);
+      if (cnyRes) {
+        const cnyData = await cnyRes.json();
+        const cnyMga = cnyData?.rates?.MGA;
+        const cnyEl = document.getElementById('gold-price');
+        if (cnyMga && cnyEl) cnyEl.textContent = Math.round(cnyMga).toLocaleString('fr-FR') + ' Ar';
+      }
+
+      // USD -> MGA
+      const usdRes = await fetch('https://open.er-api.com/v6/latest/USD').catch(() => null);
+      if (usdRes) {
+        const usdData = await usdRes.json();
+        const usdMga = usdData?.rates?.MGA;
+        const usdEl = document.getElementById('sh-price');
+        if (usdMga && usdEl) usdEl.textContent = Math.round(usdMga).toLocaleString('fr-FR') + ' Ar';
+      }
+
+      // EUR -> MGA
+      const eurRes = await fetch('https://open.er-api.com/v6/latest/EUR').catch(() => null);
+      if (eurRes) {
+        const eurData = await eurRes.json();
+        const eurMga = eurData?.rates?.MGA;
+        const eurEl = document.getElementById('sp-price');
+        if (eurMga && eurEl) eurEl.textContent = Math.round(eurMga).toLocaleString('fr-FR') + ' Ar';
+      }
+
     } catch (e) {
       console.log('Ticker error:', e);
     }
