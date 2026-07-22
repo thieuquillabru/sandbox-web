@@ -398,23 +398,15 @@
   const FEE = 1.03;
   const FALLBACK_YUAN_RATE = 631.89;
   const FALLBACK_USD_RATE = 4500;
-  const API_TIMEOUT = 5000; // 5 seconds
+  const API_TIMEOUT = 5000;
 
-  // Tarifs aériens (Ar/kg)
-  const TARIFF_AIR = {
-    express: 83000,
-    normal: 70000
+  const TARIFF = {
+    AIR: { express: 83000, normal: 70000 },
+    SEA: { general: 360, battery: 410, volumeThreshold: 0.25 }
   };
 
-  // Tarifs maritimes ($/m³)
-  const TARIFF_SEA = {
-    general: 360,
-    battery: 410,
-    volumeThreshold: 0.25 // m³
-  };
-
-  // === DOM ELEMENTS (cached safely) ===
-  const elements = {
+  // === DOM ELEMENTS ===
+  const el = {
     yuan: document.getElementById('yuan'),
     out: document.getElementById('out'),
     rate: document.getElementById('rate'),
@@ -436,10 +428,8 @@
 
   // === STATE ===
   let shipMode = 'express';
-  /** @type {'general' | 'battery'} */
   let maritimeType = 'general';
-  /** @type {number} */
-  let usdToMgaRate = 4500;
+  let usdToMgaRate = FALLBACK_USD_RATE;
 
   // === UTILS ===
   function safeParseFloat(value) {
@@ -447,42 +437,53 @@
     return isNaN(num) ? 0 : num;
   }
 
+  function debounce(fn, delay = 120) {
+    let timeout;
+    return function(...args) {
+      clearTimeout(timeout);
+      timeout = setTimeout(() => fn.apply(this, args), delay);
+    };
+  }
+
   // === CHANGE ===
   function calcChange(rate) {
-    if (!elements.yuan || !elements.out) return;
-    const y = safeParseFloat(elements.yuan.value);
-    if (y < 0) { elements.out.textContent = '-'; return; }
-    elements.out.textContent = (y * FEE * rate).toLocaleString('fr-FR', {maximumFractionDigits:2});
+    if (!el.yuan || !el.out) return;
+    const y = safeParseFloat(el.yuan.value);
+    if (y < 0 || isNaN(y) || !isFinite(y)) {
+      el.out.textContent = '-';
+      return;
+    }
+    el.out.textContent = (y * FEE * rate).toLocaleString('fr-FR', {maximumFractionDigits:2});
   }
 
   function fetchRate() {
-    if (!elements.rate) return;
+    if (!el.rate) return;
     fetch('https://open.er-api.com/v6/latest/CNY')
       .then(r => r.ok ? r.json() : Promise.reject())
       .then(j => {
         const v = j?.rates?.MGA;
         if (v) {
-          elements.rate.textContent = v.toLocaleString('fr-FR', {maximumFractionDigits:2});
+          el.rate.textContent = v.toLocaleString('fr-FR', {maximumFractionDigits:2});
           localStorage.setItem('yuan_rate', v);
           calcChange(v);
         }
       })
       .catch(() => {
-        const fb = parseFloat(localStorage.getItem('yuan_rate')) || 631.89;
-        elements.rate.textContent = fb.toLocaleString('fr-FR', {maximumFractionDigits:2});
+        const fb = parseFloat(localStorage.getItem('yuan_rate')) || FALLBACK_YUAN_RATE;
+        el.rate.textContent = fb.toLocaleString('fr-FR', {maximumFractionDigits:2});
         calcChange(fb);
       });
   }
 
-  if (elements.yuan) {
-    elements.yuan.addEventListener('input', () => calcChange(parseFloat(localStorage.getItem('yuan_rate')) || 631.89));
+  if (el.yuan) {
+    el.yuan.addEventListener('input', () => calcChange(parseFloat(localStorage.getItem('yuan_rate')) || FALLBACK_YUAN_RATE));
   }
   const refreshBtn = document.getElementById('refresh');
   if (refreshBtn) refreshBtn.addEventListener('click', fetchRate);
 
   const cached = parseFloat(localStorage.getItem('yuan_rate'));
-  if (cached && elements.rate) {
-    elements.rate.textContent = cached.toLocaleString('fr-FR',{maximumFractionDigits:2});
+  if (cached && el.rate) {
+    el.rate.textContent = cached.toLocaleString('fr-FR',{maximumFractionDigits:2});
     calcChange(cached);
   }
   fetchRate();
@@ -492,23 +493,23 @@
     document.querySelectorAll('.tabview').forEach(v => v.classList.remove('active'));
     const target = document.getElementById('tab-' + tabName);
     if (target) target.classList.add('active');
-    if (elements.tabSelect) elements.tabSelect.value = tabName;
+    if (el.tabSelect) el.tabSelect.value = tabName;
   }
-  if (elements.tabSelect) {
-    elements.tabSelect.addEventListener('change', () => switchTab(elements.tabSelect.value));
+  if (el.tabSelect) {
+    el.tabSelect.addEventListener('change', () => switchTab(el.tabSelect.value));
   }
   switchTab('change');
 
   // === EXP AVION ===
   function calcShip() {
-    if (!elements.grams || !elements.shipOut) return;
-    const g = safeParseFloat(elements.grams.value);
-    if (g < 0) { elements.shipOut.textContent = '-'; return; }
-    const tarif = TARIFF_AIR[shipMode] || TARIFF_AIR.normal;
-    elements.shipOut.textContent = (g * tarif / 1000).toLocaleString('fr-FR', {maximumFractionDigits:2});
+    if (!el.grams || !el.shipOut) return;
+    const g = safeParseFloat(el.grams.value);
+    if (g < 0) { el.shipOut.textContent = '-'; return; }
+    const tarif = TARIFF.AIR[shipMode] || TARIFF.AIR.normal;
+    el.shipOut.textContent = (g * tarif / 1000).toLocaleString('fr-FR', {maximumFractionDigits:2});
   }
 
-  if (elements.grams) elements.grams.addEventListener('input', calcShip);
+  if (el.grams) el.grams.addEventListener('input', calcShip);
 
   const shipBtns = document.querySelectorAll('#tab-exp-avion .shipbtn');
   shipBtns.forEach(b => {
@@ -522,103 +523,89 @@
   calcShip();
 
   // === EXP BAT ===
-  /**
-   * Type de produit pour l'expédition maritime
-   * - 'general' : tarif normal (360 $/m³)
-   * - 'battery' : tarif majoré (410 $/m³) ou si volume < 0.25m³
-   */
   maritimeType = 'general';
-  usdToMgaRate = 4500;
+  usdToMgaRate = FALLBACK_USD_RATE;
 
   async function fetchUsdMgaRate() {
     try {
       const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 5000); // 5s timeout
+      const timeoutId = setTimeout(() => controller.abort(), API_TIMEOUT);
 
       const res = await fetch('https://open.er-api.com/v6/latest/USD', {
         signal: controller.signal
       });
-      
       clearTimeout(timeoutId);
-      
+
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
-      
       const data = await res.json();
-      if (data?.rates?.MGA) {
-        usdToMgaRate = data.rates.MGA;
-      }
+      if (data?.rates?.MGA) usdToMgaRate = data.rates.MGA;
     } catch(e) {
-      if (e.name === 'AbortError') {
-        console.warn('USD/MGA rate fetch timed out, using fallback:', usdToMgaRate);
-      } else {
-        console.warn('USD/MGA rate fetch failed, using fallback:', usdToMgaRate);
-      }
+      console.warn('USD/MGA rate fetch failed, using fallback:', usdToMgaRate);
     }
   }
   fetchUsdMgaRate();
   setInterval(fetchUsdMgaRate, 300000);
 
   function calculateMaritime() {
-    if (!elements.length || !elements.width || !elements.height || !elements.volume || 
-        !elements.maritimeUsd || !elements.maritimeMga || !elements.maritimeFormula) return;
+    if (!el.length || !el.width || !el.height || !el.volume || 
+        !el.maritimeUsd || !el.maritimeMga || !el.maritimeFormula) return;
 
-    const l = Math.max(0, safeParseFloat(elements.length.value));
-    const w = Math.max(0, safeParseFloat(elements.width.value));
-    const h = Math.max(0, safeParseFloat(elements.height.value));
+    const l = safeParseFloat(el.length.value);
+    const w = safeParseFloat(el.width.value);
+    const h = safeParseFloat(el.height.value);
+
+    // Protection contre les valeurs non numériques ou négatives
+    if (isNaN(l) || isNaN(w) || isNaN(h) || l < 0 || w < 0 || h < 0) {
+      el.volume.textContent = '0.000';
+      return;
+    }
+
     const volumeM3 = (l * w * h) / 1000000;
+    el.volume.textContent = volumeM3.toFixed(3);
 
-    elements.volume.textContent = volumeM3.toFixed(3);
-
-    const isBatteryOrSmall = maritimeType === 'battery' || volumeM3 < TARIFF_SEA.volumeThreshold;
-    const rate = isBatteryOrSmall ? TARIFF_SEA.battery : TARIFF_SEA.general;
+    const isBatteryOrSmall = maritimeType === 'battery' || volumeM3 < TARIFF.SEA.volumeThreshold;
+    const rate = isBatteryOrSmall ? TARIFF.SEA.battery : TARIFF.SEA.general;
     const priceUSD = volumeM3 * rate;
     const priceMGA = Math.round(priceUSD * usdToMgaRate);
 
-    elements.maritimeUsd.textContent = priceUSD.toFixed(2);
-    elements.maritimeMga.textContent = priceMGA.toLocaleString('fr-FR');
-    elements.maritimeFormula.textContent = `${rate} $ × ${volumeM3.toFixed(3)} m³`;
+    el.maritimeUsd.textContent = priceUSD.toFixed(2);
+    el.maritimeMga.textContent = priceMGA.toLocaleString('fr-FR');
+    el.maritimeFormula.textContent = `${rate} $ × ${volumeM3.toFixed(3)} m³`;
   }
 
-  // Debounce utility
-  function debounce(fn, delay = 150) {
-    let timeout;
-    return function(...args) {
-      clearTimeout(timeout);
-      timeout = setTimeout(() => fn.apply(this, args), delay);
-    };
-  }
-
-  // Protection des inputs Exp Bat (avec debounce)
-  if (elements.length && elements.width && elements.height) {
-    const debouncedMaritime = debounce(calculateMaritime, 120);
-    [elements.length, elements.width, elements.height].forEach(el => {
-      el.addEventListener('input', debouncedMaritime);
+  // Debounced input handler
+  const debouncedMaritime = debounce(calculateMaritime, 120);
+  if (el.length && el.width && el.height) {
+    [el.length, el.width, el.height].forEach(input => {
+      input.addEventListener('input', debouncedMaritime);
     });
   }
 
-  // Boutons Exp Bat (délégation robuste)
+  // Maritime type buttons - Very robust direct listeners
   function initMaritimeButtons() {
-    const container = elements.maritimeButtons;
+    const container = document.getElementById('maritime-type-buttons');
     if (!container) return;
 
-    container.addEventListener('click', function(e) {
-      const btn = e.target.closest('.shipbtn');
-      if (!btn) return;
+    const buttons = container.querySelectorAll('.shipbtn');
+    
+    buttons.forEach(btn => {
+      // Remove any existing listeners first
+      btn.onclick = null;
+      
+      btn.addEventListener('click', function() {
+        buttons.forEach(b => b.classList.remove('active'));
+        this.classList.add('active');
 
-      container.querySelectorAll('.shipbtn').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-
-      maritimeType = btn.dataset.type || 'general';
-      calculateMaritime();
+        maritimeType = this.dataset.type || 'general';
+        calculateMaritime();
+      });
     });
   }
   initMaritimeButtons();
 
-  // Initialisation sécurisée
+  // Initial calculation
   maritimeType = 'general';
-  setTimeout(() => {
-    if (typeof calculateMaritime === 'function') calculateMaritime();
-  }, 400);
+  setTimeout(calculateMaritime, 400);
 
   // === SIMULATION ===
   const productDB = {
@@ -628,13 +615,25 @@
     "batterie anker 10000": { weight: 195, sources: ["anker.com"] },
   };
 
+  /**
+   * Recherche le poids le plus probable d'un produit.
+   * @param {string} query - Nom du produit saisi par l'utilisateur
+   * @returns {{weight: number, sources: string[], agent: string}}
+   */
   function getBestMatch(query) {
+    // Validation stricte de l'entrée
+    if (!query || typeof query !== 'string' || query.trim() === '') {
+      return { weight: 0, sources: ["Entrée invalide"], agent: "Erreur" };
+    }
+
     const q = query.toLowerCase().trim();
 
+    // Recherche exacte
     if (productDB[q]) {
       return { ...productDB[q], agent: "Base officielle" };
     }
 
+    // Règles par catégorie
     if (q.includes("iphone")) {
       return { weight: 199, sources: ["apple.com"], agent: "Règle iPhone" };
     }
@@ -645,12 +644,13 @@
       return { weight: 195, sources: ["anker.com"], agent: "Règle batterie" };
     }
 
+    // Estimation par défaut
     return { weight: 380, sources: ["Estimation générique"], agent: "Règle par défaut" };
   }
 
-  if (elements.simBtn && elements.simResult && elements.simInput) {
-    elements.simBtn.addEventListener('click', () => {
-      const val = elements.simInput.value.trim();
+  if (el.simBtn && el.simResult && el.simInput) {
+    el.simBtn.addEventListener('click', () => {
+      const val = el.simInput.value.trim();
       if (!val) return;
 
       const data = getBestMatch(val);
@@ -661,37 +661,17 @@
       if (nameEl) nameEl.textContent = val;
       if (weightEl) weightEl.textContent = data.weight;
       if (sourcesEl) sourcesEl.innerHTML = data.sources.map(s => `• ${s}`).join("<br>");
-      elements.simResult.style.display = "block";
+      el.simResult.style.display = "block";
     });
 
-    elements.simInput.addEventListener('keypress', (e) => {
-      if (e.key === "Enter" && elements.simBtn) elements.simBtn.click();
-    });
-  }
-
-  // Protection Exp Avion - boutons
-  const shipBtnsExp = document.querySelectorAll('#tab-exp-avion .shipbtn');
-  shipBtnsExp.forEach(b => {
-    b.addEventListener('click', () => {
-      shipBtnsExp.forEach(x => x.classList.remove('active'));
-      b.classList.add('active');
-      shipMode = b.dataset.mode;
-      if (typeof calcShip === 'function') calcShip();
-    });
-  });
-
-  // Protection contre les valeurs négatives dans Exp Avion
-  if (elements.grams) {
-    elements.grams.addEventListener('input', () => {
-      const val = safeParseFloat(elements.grams.value);
-      if (val < 0) elements.grams.value = 0;
+    el.simInput.addEventListener('keypress', (e) => {
+      if (e.key === "Enter" && el.simBtn) el.simBtn.click();
     });
   }
 
   // === TICKER ===
   async function updateTicker() {
     try {
-      // BTC
       const btcRes = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd&include_24hr_change=true').catch(() => null);
       if (btcRes) {
         const btcData = await btcRes.json();
@@ -708,7 +688,6 @@
         }
       }
 
-      // CNY -> MGA
       const cnyRes = await fetch('https://open.er-api.com/v6/latest/CNY').catch(() => null);
       if (cnyRes) {
         const cnyData = await cnyRes.json();
@@ -717,7 +696,6 @@
         if (cnyMga && cnyEl) cnyEl.textContent = Math.round(cnyMga).toLocaleString('fr-FR') + ' Ar';
       }
 
-      // USD -> MGA
       const usdRes = await fetch('https://open.er-api.com/v6/latest/USD').catch(() => null);
       if (usdRes) {
         const usdData = await usdRes.json();
@@ -726,7 +704,6 @@
         if (usdMga && usdEl) usdEl.textContent = Math.round(usdMga).toLocaleString('fr-FR') + ' Ar';
       }
 
-      // EUR -> MGA
       const eurRes = await fetch('https://open.er-api.com/v6/latest/EUR').catch(() => null);
       if (eurRes) {
         const eurData = await eurRes.json();
