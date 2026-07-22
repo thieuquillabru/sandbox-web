@@ -398,10 +398,20 @@
   const FEE = 1.03;
   const FALLBACK_YUAN_RATE = 631.89;
   const FALLBACK_USD_RATE = 4500;
-  const TARIFF_AIR_EXPRESS = 83000;
-  const TARIFF_AIR_NORMAL = 70000;
-  const TARIFF_SEA_GENERAL = 360;
-  const TARIFF_SEA_BATTERY = 410;
+  const API_TIMEOUT = 5000; // 5 seconds
+
+  // Tarifs aériens (Ar/kg)
+  const TARIFF_AIR = {
+    express: 83000,
+    normal: 70000
+  };
+
+  // Tarifs maritimes ($/m³)
+  const TARIFF_SEA = {
+    general: 360,
+    battery: 410,
+    volumeThreshold: 0.25 // m³
+  };
 
   // === DOM ELEMENTS (cached safely) ===
   const elements = {
@@ -442,7 +452,7 @@
     if (!elements.yuan || !elements.out) return;
     const y = safeParseFloat(elements.yuan.value);
     if (y < 0) { elements.out.textContent = '-'; return; }
-    elements.out.textContent = (y * 1.03 * rate).toLocaleString('fr-FR', {maximumFractionDigits:2});
+    elements.out.textContent = (y * FEE * rate).toLocaleString('fr-FR', {maximumFractionDigits:2});
   }
 
   function fetchRate() {
@@ -494,7 +504,7 @@
     if (!elements.grams || !elements.shipOut) return;
     const g = safeParseFloat(elements.grams.value);
     if (g < 0) { elements.shipOut.textContent = '-'; return; }
-    const tarif = shipMode === 'express' ? 83000 : 70000;
+    const tarif = TARIFF_AIR[shipMode] || TARIFF_AIR.normal;
     elements.shipOut.textContent = (g * tarif / 1000).toLocaleString('fr-FR', {maximumFractionDigits:2});
   }
 
@@ -522,12 +532,27 @@
 
   async function fetchUsdMgaRate() {
     try {
-      const res = await fetch('https://open.er-api.com/v6/latest/USD');
-      if (!res.ok) throw new Error('API error');
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 5000); // 5s timeout
+
+      const res = await fetch('https://open.er-api.com/v6/latest/USD', {
+        signal: controller.signal
+      });
+      
+      clearTimeout(timeoutId);
+      
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      
       const data = await res.json();
-      if (data?.rates?.MGA) usdToMgaRate = data.rates.MGA;
+      if (data?.rates?.MGA) {
+        usdToMgaRate = data.rates.MGA;
+      }
     } catch(e) {
-      console.warn('USD/MGA rate fetch failed, using fallback:', usdToMgaRate);
+      if (e.name === 'AbortError') {
+        console.warn('USD/MGA rate fetch timed out, using fallback:', usdToMgaRate);
+      } else {
+        console.warn('USD/MGA rate fetch failed, using fallback:', usdToMgaRate);
+      }
     }
   }
   fetchUsdMgaRate();
@@ -544,7 +569,8 @@
 
     elements.volume.textContent = volumeM3.toFixed(3);
 
-    const rate = (maritimeType === 'battery' || volumeM3 < 0.25) ? 410 : 360;
+    const isBatteryOrSmall = maritimeType === 'battery' || volumeM3 < TARIFF_SEA.volumeThreshold;
+    const rate = isBatteryOrSmall ? TARIFF_SEA.battery : TARIFF_SEA.general;
     const priceUSD = volumeM3 * rate;
     const priceMGA = Math.round(priceUSD * usdToMgaRate);
 
@@ -553,12 +579,20 @@
     elements.maritimeFormula.textContent = `${rate} $ × ${volumeM3.toFixed(3)} m³`;
   }
 
-  // Protection des inputs Exp Bat
+  // Debounce utility
+  function debounce(fn, delay = 150) {
+    let timeout;
+    return function(...args) {
+      clearTimeout(timeout);
+      timeout = setTimeout(() => fn.apply(this, args), delay);
+    };
+  }
+
+  // Protection des inputs Exp Bat (avec debounce)
   if (elements.length && elements.width && elements.height) {
+    const debouncedMaritime = debounce(calculateMaritime, 120);
     [elements.length, elements.width, elements.height].forEach(el => {
-      el.addEventListener('input', () => {
-        if (typeof calculateMaritime === 'function') calculateMaritime();
-      });
+      el.addEventListener('input', debouncedMaritime);
     });
   }
 
