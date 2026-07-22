@@ -403,6 +403,7 @@
   }
 
   function fetchRate() {
+    if (!rateEl) return;
     fetch('https://open.er-api.com/v6/latest/CNY')
       .then(r => r.json())
       .then(j => {
@@ -483,19 +484,20 @@
   setInterval(fetchUsdMgaRate, 300000);
 
   function calculateMaritime() {
-    const l = parseFloat(lengthEl.value) || 0;
-    const w = parseFloat(widthEl.value) || 0;
-    const h = parseFloat(heightEl.value) || 0;
+    const l = Math.max(0, parseFloat(lengthEl?.value) || 0);
+    const w = Math.max(0, parseFloat(widthEl?.value) || 0);
+    const h = Math.max(0, parseFloat(heightEl?.value) || 0);
     const volumeM3 = (l * w * h) / 1000000;
-    volumeEl.textContent = volumeM3.toFixed(3);
+
+    if (volumeEl) volumeEl.textContent = volumeM3.toFixed(3);
 
     const rate = (maritimeType === 'battery' || volumeM3 < 0.25) ? 410 : 360;
     const priceUSD = volumeM3 * rate;
     const priceMGA = Math.round(priceUSD * usdToMgaRate);
 
-    maritimePriceUsdEl.textContent = priceUSD.toFixed(2);
-    maritimePriceMgaEl.textContent = priceMGA.toLocaleString('fr-FR');
-    maritimeFormulaEl.textContent = `${rate} $ × ${volumeM3.toFixed(3)} m³`;
+    if (maritimePriceUsdEl) maritimePriceUsdEl.textContent = priceUSD.toFixed(2);
+    if (maritimePriceMgaEl) maritimePriceMgaEl.textContent = priceMGA.toLocaleString('fr-FR');
+    if (maritimeFormulaEl) maritimeFormulaEl.textContent = `${rate} $ × ${volumeM3.toFixed(3)} m³`;
   }
 
   [lengthEl, widthEl, heightEl].forEach(el => el.addEventListener('input', calculateMaritime));
@@ -517,7 +519,9 @@
     });
   }
   initMaritimeButtons();
-  setTimeout(calculateMaritime, 400);
+  setTimeout(() => {
+    if (typeof calculateMaritime === 'function') calculateMaritime();
+  }, 400);
 
   // === SIMULATION ===
   const simInput = document.getElementById('product-name');
@@ -540,16 +544,22 @@
     return { weight: 380, sources: ["Estimation"] };
   }
 
-  simBtn.addEventListener('click', () => {
-    const val = simInput.value.trim();
-    if (!val) return;
+  if (simBtn && simResult) {
+    simBtn.addEventListener('click', () => {
+      const val = simInput.value.trim();
+      if (!val) return;
 
-    const data = getBestMatch(val);
-    document.getElementById('sim-product-name').textContent = val;
-    document.getElementById('sim-weight-value').textContent = data.weight;
-    document.getElementById('sim-sources').innerHTML = data.sources.map(s => `• ${s}`).join("<br>");
-    simResult.style.display = "block";
-  });
+      const data = getBestMatch(val);
+      const nameEl = document.getElementById('sim-product-name');
+      const weightEl = document.getElementById('sim-weight-value');
+      const sourcesEl = document.getElementById('sim-sources');
+
+      if (nameEl) nameEl.textContent = val;
+      if (weightEl) weightEl.textContent = data.weight;
+      if (sourcesEl) sourcesEl.innerHTML = data.sources.map(s => `• ${s}`).join("<br>");
+      simResult.style.display = "block";
+    });
+  }
 
   // Ticker
   function updateTicker() {
