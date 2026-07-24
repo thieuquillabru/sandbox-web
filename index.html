@@ -223,7 +223,7 @@
   @keyframes ticker { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
 
   @media (max-width: 480px) {
-    .wrap { padding: 20px 16px 80px 16px; }
+    .wrap { padding: calc(58px + env(safe-area-inset-top)) 16px 80px 16px; }
     .head h1 { font-size: 22px; }
   }
 </style>
